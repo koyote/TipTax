@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/currency1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$" />
+
+            <RadioButton
+                android:id="@+id/currency2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="€" />
+
+            <RadioButton
+                android:id="@+id/currency3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="£" />
+
+            <Button
+                android:id="@+id/customizeCurrencies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customize currencies" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/defaultTipText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Default Tip"
+            android:textSize="30px" />
+
+        <Spinner
+            android:id="@+id/defaultTipSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>
