@@ -8,10 +8,7 @@ public class TipTaxActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        System.out
-        
+        setContentView(R.layout.main);        
         
     }
 }
