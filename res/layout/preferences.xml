@@ -17,33 +17,33 @@
                 android:id="@+id/currency1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$" />
+                android:text="@string/dollar" />
 
             <RadioButton
                 android:id="@+id/currency2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="€" />
+                android:text="@string/euro" />
 
             <RadioButton
                 android:id="@+id/currency3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="£" />
+                android:text="@string/sterling" />
 
             <Button
                 android:id="@+id/customizeCurrencies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Customize currencies" />
+                android:text="@string/customise" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/defaultTipText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Default Tip"
-            android:textSize="30px" />
+            android:text="@string/d_tip"
+            android:textSize="30sp" />
 
         <Spinner
             android:id="@+id/defaultTipSpinner"

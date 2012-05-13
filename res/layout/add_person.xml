@@ -15,13 +15,13 @@
             android:id="@+id/namePerson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="@string/name" />
 
         <EditText
             android:id="@+id/totalSpent"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:hint="Total spent" 
+            android:hint="@string/t_spent"
             android:inputType="numberDecimal" />
     </LinearLayout>
 
@@ -29,6 +29,6 @@
         android:id="@+id/OKinput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OK" />
+        android:text="@string/ok" />
 
 </LinearLayout>

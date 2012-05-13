@@ -39,30 +39,37 @@ public class TipTaxActivity extends Activity {
 				final Dialog dialog = new Dialog(TipTaxActivity.this);
 
 				dialog.setContentView(R.layout.add_person);
-				dialog.setTitle("Add you desired Item");
+				dialog.setTitle("Add your desired Item");
 
 				dialog.show();
 
-				final EditText nameDialog = (EditText) dialog.findViewById(R.id.namePerson);
-				final EditText totalDialog = (EditText) dialog.findViewById(R.id.totalSpent);
-				final Button okDialog = (Button) dialog.findViewById(R.id.OKinput);
+				final EditText nameDialog = (EditText) dialog
+						.findViewById(R.id.namePerson);
+				final EditText totalDialog = (EditText) dialog
+						.findViewById(R.id.totalSpent);
+				final Button okDialog = (Button) dialog
+						.findViewById(R.id.OKinput);
 
 				okDialog.setOnClickListener(new View.OnClickListener() {
 
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
 						dialog.dismiss();
 						// safety if no input
-						if (!totalDialog.getText().toString().equals("")) {
-							final String nameDialogText = nameDialog.getText().toString();
-							final String sumDialogText = totalDialog.getText().toString();
+						if (totalDialog.getText().length() != 0) {
+							final String nameDialogText = nameDialog.getText()
+									.toString();
+							final String sumDialogText = totalDialog.getText()
+									.toString();
 
-							final TextView nameOfRowEditText = new TextView(TipTaxActivity.this);
-							final TextView sumOfRowEditText = new TextView(TipTaxActivity.this);
+							final TextView nameOfRowEditText = new TextView(
+									TipTaxActivity.this);
+							final TextView sumOfRowEditText = new TextView(
+									TipTaxActivity.this);
 
 							nameOfRowEditText.setText(nameDialogText);
 							sumOfRowEditText.setText(sumDialogText);
-							TableRow newRow = createRow(nameOfRowEditText, sumOfRowEditText);
+							TableRow newRow = createRow(nameOfRowEditText,
+									sumOfRowEditText);
 
 							mainTable.addView(newRow);
 
@@ -71,14 +78,18 @@ public class TipTaxActivity extends Activity {
 
 								public void onClick(View v) {
 									// TODO Auto-generated method stub
-									final Dialog dialog = new Dialog(TipTaxActivity.this);
+									final Dialog dialog = new Dialog(
+											TipTaxActivity.this);
 
 									dialog.setContentView(R.layout.add_person);
 									dialog.setTitle("Change values");
 
-									final EditText nameDialog = (EditText) dialog.findViewById(R.id.namePerson);
-									final EditText totalDialog = (EditText) dialog.findViewById(R.id.totalSpent);
-									final Button okDialog = (Button) dialog.findViewById(R.id.OKinput);
+									final EditText nameDialog = (EditText) dialog
+											.findViewById(R.id.namePerson);
+									final EditText totalDialog = (EditText) dialog
+											.findViewById(R.id.totalSpent);
+									final Button okDialog = (Button) dialog
+											.findViewById(R.id.OKinput);
 
 									nameDialog.setText(nameDialogText);
 									totalDialog.setText(sumDialogText);
@@ -92,16 +103,29 @@ public class TipTaxActivity extends Activity {
 
 											dialog.dismiss();
 
-											if (!nameDialog.getText().toString().equals("")) {
+											if (!nameDialog.getText()
+													.toString().equals("")) {
 												// substract ols value and adds
 												// the new one
-												totalSumPeople -= Double.parseDouble(sumDialogText);
-												totalSumPeople += Double.parseDouble(totalDialog.getText().toString());
+												totalSumPeople -= Double
+														.parseDouble(sumDialogText);
+												totalSumPeople += Double
+														.parseDouble(totalDialog
+																.getText()
+																.toString());
 
-												nameOfRowEditText.setText(nameDialog.getText().toString());
-												sumOfRowEditText.setText(totalDialog.getText().toString());
+												nameOfRowEditText
+														.setText(nameDialog
+																.getText()
+																.toString());
+												sumOfRowEditText
+														.setText(totalDialog
+																.getText()
+																.toString());
 
-												updateTotalAndTipValues(totalSumPeople, tipPercentage);
+												updateTotalAndTipValues(
+														totalSumPeople,
+														tipPercentage);
 											}
 										}
 									});
@@ -113,7 +137,8 @@ public class TipTaxActivity extends Activity {
 							totalSumPeople += Double.parseDouble(sumDialogText);
 
 							// updates the total values
-							updateTotalAndTipValues(totalSumPeople, tipPercentage);
+							updateTotalAndTipValues(totalSumPeople,
+									tipPercentage);
 
 						}
 					}
@@ -121,38 +146,36 @@ public class TipTaxActivity extends Activity {
 
 			}
 		});
+	}
+	
+	public void taxInputClick(View v) {
+		final Dialog dialog = new Dialog(TipTaxActivity.this);
+		dialog.setContentView(R.layout.add_person);
+		dialog.setTitle("Change values");
 
-		// listener to change the taxRow value
-		taxDue.setOnClickListener(new View.OnClickListener() {
+		final EditText name = (EditText) dialog
+				.findViewById(R.id.namePerson);
+		name.setText("TAX");
+
+		final EditText taxTotal = (EditText) dialog
+				.findViewById(R.id.totalSpent);
+		final Button okButton = (Button) dialog
+				.findViewById(R.id.OKinput);
+
+		dialog.show();
+
+		okButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				final Dialog dialog = new Dialog(TipTaxActivity.this);
-				dialog.setContentView(R.layout.add_person);
-				dialog.setTitle("Change values");
-
-				final EditText name = (EditText) dialog.findViewById(R.id.namePerson);
-				name.setText("TAX");
-
-				final EditText taxTotal = (EditText) dialog.findViewById(R.id.totalSpent);
-				final Button okButton = (Button) dialog.findViewById(R.id.OKinput);
-
-				dialog.show();
-
-				okButton.setOnClickListener(new View.OnClickListener() {
-
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						dialog.dismiss();
-						if (!taxTotal.getText().toString().equals("")) {
-							taxDue.setText(taxTotal.getText().toString());
-							updateTotalAndTipValues(totalSumPeople, tipPercentage);
-						}
-					}
-				});
+				dialog.dismiss();
+				if (!taxTotal.getText().toString().equals("")) {
+					taxDue.setText(taxTotal.getText().toString());
+					updateTotalAndTipValues(totalSumPeople,
+							tipPercentage);
+				}
 			}
 		});
-
 	}
 
 	private TableRow createRow(TextView name, TextView sum) {
@@ -171,13 +194,16 @@ public class TipTaxActivity extends Activity {
 
 	}
 
-	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
+	private void updateTotalAndTipValues(double totalSumPeople,
+			double tipPercentage) {
 		// Rounding two Decimal point
 		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		Double taxValue = Double.parseDouble(taxDue.getText().toString());
-		double result = totalSumPeople + taxValue + (tipPercentage * totalSumPeople / 100.0);
+		double result = totalSumPeople + taxValue
+				+ (tipPercentage * totalSumPeople / 100.0);
 		result = Double.valueOf(twoDForm.format(result));
-		tipDue.setText(Double.toString(Double.valueOf(twoDForm.format(tipPercentage * totalSumPeople / 100.0))));
+		tipDue.setText(Double.toString(Double.valueOf(twoDForm
+				.format(tipPercentage * totalSumPeople / 100.0))));
 		totalDue.setText(Double.toString(result));
 
 	}

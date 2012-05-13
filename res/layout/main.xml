@@ -16,7 +16,6 @@
         android:layout_height="match_parent"
         android:gravity="bottom|right"
         android:orientation="vertical" >
-        //tax
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,18 +27,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="left"
-                android:text="TAX"
-                android:textSize="25px" />
+                android:text="@string/tax"
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/taxInput"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:gravity="right"
-                android:text="0"
-                android:textSize="25px" />
+                android:clickable="true"
+                android:onClick="taxInputClick"
+                android:text="@string/zero"
+                android:textSize="25sp" />
         </LinearLayout>
-        //Tip
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,18 +51,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="left"
-                android:text="TIP"
-                android:textSize="25px" />
+                android:text="@string/tip"
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/tipInput"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:gravity="right"
-                android:text="0"
-                android:textSize="25px" />
+                android:text="@string/zero"
+                android:textSize="25sp" />
         </LinearLayout>
-        //Total
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,16 +73,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="left"
-                android:text="TOTAL"
-                android:textSize="30px" />
+                android:text="@string/total"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/TotalDueText"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:gravity="right"
-                android:text="0"
-                android:textSize="30px" />
+                android:text="@string/zero"
+                android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -97,14 +96,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@android:drawable/ic_input_add"
-                android:text="Add Person" />
+                android:text="@string/add_p" />
 
             <Button
                 android:id="@+id/finishToTable"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:drawableLeft="@android:drawable/ic_input_get"
-                android:text="Finish" />
+                android:text="@string/finish" />
         </LinearLayout>
     </LinearLayout>
 
