@@ -12,13 +12,13 @@
         android:orientation="horizontal" >
 
         <EditText
-            android:id="@+id/namePerson"
+            android:id="@+id/namePersonET"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/name" />
 
         <EditText
-            android:id="@+id/totalSpent"
+            android:id="@+id/valuePersonET"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:hint="@string/t_spent"
@@ -26,9 +26,10 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/OKinput"
+        android:id="@+id/addPersonOKBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="addPersonOKClick"
         android:text="@string/ok" />
 
 </LinearLayout>

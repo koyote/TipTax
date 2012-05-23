@@ -15,5 +15,6 @@
     <string name="sterling">£</string>
     <string name="customise">Other</string>
     <string name="d_tip">Default Tip</string>
+    <string name="no_items">Please add a Person!</string>
 
 </resources>

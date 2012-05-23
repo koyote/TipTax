@@ -4,12 +4,16 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TableLayout
-        android:id="@+id/mainTable"
-        android:layout_width="match_parent"
+    <ListView
+        android:id="@+id/android:list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/android:empty"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="1" >
-    </TableLayout>
+        android:text="@string/no_items" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,8 +38,8 @@
                 android:id="@+id/taxInput"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:gravity="right"
                 android:clickable="true"
+                android:gravity="right"
                 android:onClick="taxInputClick"
                 android:text="@string/zero"
                 android:textSize="25sp" />
@@ -94,9 +98,9 @@
             <Button
                 android:id="@+id/addPerson"
                 android:layout_width="wrap_content"
-                android:onClick="addPersonClick"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@android:drawable/ic_input_add"
+                android:onClick="addPersonClick"
                 android:text="@string/add_p" />
 
             <Button
