@@ -11,17 +11,20 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class TipTaxActivity extends ListActivity implements OnSharedPreferenceChangeListener {
 
-	private static final int REQCODE = 0;
+	private static final int NEWREQ = 0;
+	private static final int EDITREQ = 1;
 
 	private ArrayList<Person> persons;
 	private PersonAdapter adapter;
@@ -68,16 +71,31 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 	public void addPersonClick(View v) {
 		Intent i = new Intent(this, AddPersonActivity.class);
-		startActivityForResult(i, REQCODE);
+		startActivityForResult(i, NEWREQ);
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 0 && resultCode == Activity.RESULT_OK) {
+		if (resultCode == Activity.RESULT_OK) {
+
 			String name = data.getStringExtra("name");
 			String value = data.getStringExtra("value");
-			persons.add(new Person(name, value));
+
+			switch (requestCode) {
+			case NEWREQ:
+				persons.add(new Person(name, value));
+				break;
+			case EDITREQ:
+				int pos = data.getIntExtra("origPos", -1);
+				if (pos != -1) {
+					Person p = persons.get(pos);
+					p.setName(name);
+					p.setValue(value);
+				}
+				break;
+			}
+
 			adapter.notifyDataSetChanged();
 			updateTotalAndTipValues(totalSumPeople(), tipPercentage);
 		}
@@ -129,42 +147,14 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 	}
 
-	// public void clickingonarow(){
-	// public void onClick(View v) {
-	// final Dialog dialog = new Dialog(TipTaxActivity.this);
-	//
-	// dialog.setContentView(R.layout.add_person);
-	// dialog.setTitle("Change values");
-	//
-	// final EditText nameDialog = (EditText)
-	// dialog.findViewById(R.id.namePerson);
-	// final EditText totalDialog = (EditText)
-	// dialog.findViewById(R.id.totalSpent);
-	// final Button okDialog = (Button) dialog.findViewById(R.id.OKinput);
-	//
-	// nameDialog.setText(nameDialogText);
-	// totalDialog.setText(sumDialogText);
-	//
-	// dialog.show();
-	//
-	// okDialog.setOnClickListener(new View.OnClickListener() {
-	//
-	// public void onClick(View v) {
-	//
-	// dialog.dismiss();
-	// if (!nameDialog.getText().toString().equals("")) {
-	// // substract ols value and adds
-	// // the new one
-	// totalSumPeople -= Double.parseDouble(sumDialogText);
-	// totalSumPeople += Double.parseDouble(totalDialog.getText().toString());
-	//
-	// nameOfRowEditText.setText(nameDialog.getText().toString());
-	// sumOfRowEditText.setText(totalDialog.getText().toString());
-	//
-	// updateTotalAndTipValues(totalSumPeople, tipPercentage);
-	// }
-	// }
-	// });
-	// }
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Intent i = new Intent(v.getContext(), AddPersonActivity.class);
+		i.putExtra("name", persons.get(position).getName());
+		i.putExtra("value", persons.get(position).getValue());
+		i.putExtra("origPos", position);
+		startActivityForResult(i, EDITREQ);
+	}
 
 }
