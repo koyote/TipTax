@@ -3,27 +3,23 @@
     android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="2dp" >
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/namePersonET"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_weight="1"
+        android:hint="@string/name" />
 
-        <EditText
-            android:id="@+id/namePersonET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/name" />
-
-        <EditText
-            android:id="@+id/valuePersonET"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:hint="@string/t_spent"
-            android:inputType="numberDecimal" />
-    </LinearLayout>
+    <EditText
+        android:id="@+id/valuePersonET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/t_spent"
+        android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/addPersonOKBtn"

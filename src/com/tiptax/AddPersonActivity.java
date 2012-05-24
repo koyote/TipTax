@@ -13,24 +13,6 @@ public class AddPersonActivity extends Activity {
 	private String value;
 	private int origPos;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_person);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		Intent i = getIntent();
-		name = i.getStringExtra("name");
-		value = i.getStringExtra("value");
-		origPos = i.getIntExtra("origPos", -1);
-
-		((EditText) findViewById(R.id.namePersonET)).setText(name);
-		((EditText) findViewById(R.id.valuePersonET)).setText(value);
-	}
-
 	public void addPersonOKClick(View v) {
 		name = ((EditText) findViewById(R.id.namePersonET)).getText().toString();
 		value = ((EditText) findViewById(R.id.valuePersonET)).getText().toString();
@@ -51,6 +33,24 @@ public class AddPersonActivity extends Activity {
 		in.putExtra("origPos", origPos);
 		setResult(Activity.RESULT_OK, in);
 		finish();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.add_person);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Intent i = getIntent();
+		name = i.getStringExtra("name");
+		value = i.getStringExtra("value");
+		origPos = i.getIntExtra("origPos", -1);
+
+		((EditText) findViewById(R.id.namePersonET)).setText(name);
+		((EditText) findViewById(R.id.valuePersonET)).setText(value);
 	}
 
 }

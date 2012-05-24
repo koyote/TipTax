@@ -5,7 +5,6 @@ import android.preference.PreferenceActivity;
 
 public class TipTaxPreferences extends PreferenceActivity {
 
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

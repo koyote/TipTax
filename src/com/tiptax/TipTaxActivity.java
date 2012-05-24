@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,42 +31,6 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private double tipPercentage;
 
 	private SharedPreferences prefs;
-
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
-
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs.registerOnSharedPreferenceChangeListener(this);
-		updateDefaultValues();
-
-		totalDue = (TextView) findViewById(R.id.TotalDueText);
-		tipDue = (TextView) findViewById(R.id.tipInput);
-		taxDue = (TextView) findViewById(R.id.taxInput);
-		persons = new ArrayList<Person>();
-		adapter = new PersonAdapter(this, R.layout.personrow, persons);
-		setListAdapter(adapter);
-	}
-
-	public void taxInputClick(View v) {
-		final Dialog taxInputDialog = new Dialog(TipTaxActivity.this);
-		taxInputDialog.setContentView(R.layout.taxedit);
-		taxInputDialog.setTitle("Change tax");
-
-		Button taxOKButton = (Button) taxInputDialog.findViewById(R.id.taxOkButton);
-		taxOKButton.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				EditText taxTotal = (EditText) taxInputDialog.findViewById(R.id.taxValueEditText);
-				if (!taxTotal.getText().toString().equals("")) {
-					taxDue.setText(taxTotal.getText().toString());
-					updateTotalAndTipValues(totalSumPeople(), tipPercentage);
-				}
-				taxInputDialog.dismiss();
-			}
-		});
-		taxInputDialog.show();
-	}
 
 	public void addPersonClick(View v) {
 		Intent i = new Intent(this, AddPersonActivity.class);
@@ -101,30 +64,22 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 	}
 
-	private double totalSumPeople() {
-		double sum = 0;
-		for (Person p : persons) {
-			sum += Double.valueOf(p.getValue());
-		}
-		return sum;
-	}
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
 
-	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
-		// Rounding two Decimal point
-		DecimalFormat twoDForm = new DecimalFormat("#.##");
-		Double taxValue = Double.parseDouble(taxDue.getText().toString());
-		double result = totalSumPeople + taxValue + (tipPercentage * totalSumPeople / 100.0);
-		result = Double.valueOf(twoDForm.format(result));
-		tipDue.setText(Double.toString(Double.valueOf(twoDForm.format(tipPercentage * totalSumPeople / 100.0))));
-		totalDue.setText(Double.toString(result));
-	}
-
-	private void updateDefaultValues() {
-		tipPercentage = Double.valueOf(prefs.getString("default_currency", "15"));
-	}
-
-	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
 		updateDefaultValues();
+
+		totalDue = (TextView) findViewById(R.id.TotalDueText);
+		tipDue = (TextView) findViewById(R.id.tipInput);
+		taxDue = (TextView) findViewById(R.id.taxInput);
+		persons = new ArrayList<Person>();
+		adapter = new PersonAdapter(this, R.layout.personrow, persons);
+		setListAdapter(adapter);
+
 	}
 
 	@Override
@@ -132,6 +87,16 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.tiptaxmenu, menu);
 		return true;
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Intent i = new Intent(v.getContext(), AddPersonActivity.class);
+		i.putExtra("name", persons.get(position).getName());
+		i.putExtra("value", persons.get(position).getValue());
+		i.putExtra("origPos", position);
+		startActivityForResult(i, EDITREQ);
 	}
 
 	@Override
@@ -147,14 +112,50 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		Intent i = new Intent(v.getContext(), AddPersonActivity.class);
-		i.putExtra("name", persons.get(position).getName());
-		i.putExtra("value", persons.get(position).getValue());
-		i.putExtra("origPos", position);
-		startActivityForResult(i, EDITREQ);
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		updateDefaultValues();
+	}
+
+	public void taxInputClick(View v) {
+		final Dialog taxInputDialog = new Dialog(TipTaxActivity.this);
+		taxInputDialog.setContentView(R.layout.taxedit);
+		taxInputDialog.setTitle("Change tax");
+
+		Button taxOKButton = (Button) taxInputDialog.findViewById(R.id.taxOkButton);
+		taxOKButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				EditText taxTotal = (EditText) taxInputDialog.findViewById(R.id.taxValueEditText);
+				if (!taxTotal.getText().toString().equals("")) {
+					taxDue.setText(taxTotal.getText().toString());
+					updateTotalAndTipValues(totalSumPeople(), tipPercentage);
+				}
+				taxInputDialog.dismiss();
+			}
+		});
+		taxInputDialog.show();
+	}
+
+	private double totalSumPeople() {
+		double sum = 0;
+		for (Person p : persons) {
+			sum += Double.valueOf(p.getValue());
+		}
+		return sum;
+	}
+
+	private void updateDefaultValues() {
+		tipPercentage = Double.valueOf(prefs.getString("default_currency", "15"));
+	}
+
+	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
+		// Rounding two Decimal point
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
+		Double taxValue = Double.parseDouble(taxDue.getText().toString());
+		double result = totalSumPeople + taxValue + (tipPercentage * totalSumPeople / 100.0);
+		result = Double.valueOf(twoDForm.format(result));
+		tipDue.setText(Double.toString(Double.valueOf(twoDForm.format(tipPercentage * totalSumPeople / 100.0))));
+		totalDue.setText(Double.toString(result));
 	}
 
 }

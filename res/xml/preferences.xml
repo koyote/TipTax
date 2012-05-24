@@ -4,7 +4,6 @@
     <PreferenceCategory
         android:summary="Change currency"
         android:title="Currency" >
-
         <ListPreference
             android:entries="@array/defaultCurrencies"
             android:entryValues="@array/defaultCurrencies"
@@ -12,18 +11,16 @@
             android:summary="What should be your default currency?"
             android:title="Default currency" />
     </PreferenceCategory>
-
     <PreferenceCategory
         android:summary="Change tip"
         android:title="Tip" >
-        
-		<ListPreference
+        <ListPreference
+            android:defaultValue="15"
             android:entries="@array/defaultTipValues"
             android:entryValues="@array/defaultTipValues"
             android:key="default_tip"
             android:summary="What should be the default tip?"
             android:title="Default tip" />
-      
     </PreferenceCategory>
 
 </PreferenceScreen>

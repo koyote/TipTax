@@ -32,7 +32,9 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				pn.setText(p.getName());
 			}
 			if (pv != null) {
-				pv.setText(p.getValue());
+				pv.setText("$" + p.getValue()); // WE WILL FIND THE CURRENCY FOR
+												// THE SETTINGS AT A LATER
+												// STAGE!!
 			}
 		}
 		return v;
