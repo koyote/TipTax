@@ -7,24 +7,36 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class TipTaxActivity extends ListActivity {
+public class TipTaxActivity extends ListActivity implements OnSharedPreferenceChangeListener {
 
 	private static final int REQCODE = 0;
 
 	private ArrayList<Person> persons;
 	private PersonAdapter adapter;
 	private TextView totalDue, tipDue, taxDue;
-	private double tipPercentage = 20;
+	private double tipPercentage;
+
+	private SharedPreferences prefs;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
+		updateDefaultValues();
 
 		totalDue = (TextView) findViewById(R.id.TotalDueText);
 		tipDue = (TextView) findViewById(R.id.tipInput);
@@ -87,6 +99,34 @@ public class TipTaxActivity extends ListActivity {
 		result = Double.valueOf(twoDForm.format(result));
 		tipDue.setText(Double.toString(Double.valueOf(twoDForm.format(tipPercentage * totalSumPeople / 100.0))));
 		totalDue.setText(Double.toString(result));
+	}
+
+	private void updateDefaultValues() {
+		tipPercentage = Double.valueOf(prefs.getString("default_currency", "15"));
+	}
+
+	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+		updateDefaultValues();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.tiptaxmenu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.pref_menu_btn:
+			Intent i = new Intent(TipTaxActivity.this, TipTaxPreferences.class);
+			startActivity(i);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	// public void clickingonarow(){

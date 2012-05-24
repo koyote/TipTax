@@ -11,5 +11,10 @@
         <item>35</item>
         <item>40</item>
     </string-array>
+    <string-array name="defaultCurrencies">
+        <item>EUR</item>
+        <item>USD</item>
+        <item>GBP</item>
+    </string-array>
 
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:summary="Change currency"
+        android:title="Currency" >
+
+        <ListPreference
+            android:entries="@array/defaultCurrencies"
+            android:entryValues="@array/defaultCurrencies"
+            android:key="default_currency"
+            android:summary="What should be your default currency?"
+            android:title="Default currency" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:summary="Change tip"
+        android:title="Tip" >
+        
+		<ListPreference
+            android:entries="@array/defaultTipValues"
+            android:entryValues="@array/defaultTipValues"
+            android:key="default_tip"
+            android:summary="What should be the default tip?"
+            android:title="Default tip" />
+      
+    </PreferenceCategory>
+
+</PreferenceScreen>
