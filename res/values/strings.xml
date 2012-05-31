@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TipTax</string>
-    <string name="finish">Finish</string>
     <string name="add_p">Add Person</string>
     <string name="zero">0</string>
     <string name="total">TOTAL</string>
@@ -16,5 +15,6 @@
     <string name="customise">Other</string>
     <string name="d_tip">Default Tip</string>
     <string name="no_items">Please add a Person!</string>
+    <string name="finish">finish</string>
 
 </resources>
