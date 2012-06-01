@@ -84,7 +84,7 @@ public class FinishActivity extends ListActivity {
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		currency = prefs.getString("default_currency", "EUR");
-		converter = new CurrencyConverter("USD", currency, 0);
+		converter = new CurrencyConverter(this.getApplicationContext(),"USD", currency, 0);
 
 		ListIterator<Person> pi = persons.listIterator();
 

@@ -1,8 +1,12 @@
 package com.tiptax;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
+
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -123,6 +127,19 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
 		setListAdapter(adapter);
 
+		CurrencyConverter cc = new CurrencyConverter(this.getApplicationContext(),"USD", "EUR", 0);
+		try {
+			cc.getExchangeRates();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
