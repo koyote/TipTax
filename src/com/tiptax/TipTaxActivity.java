@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -31,9 +32,10 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private ArrayList<Person> persons;
 	private PersonAdapter adapter;
 	private TextView totalDue, tipDue, taxDue;
-	private double tipPercentage;
+	private float tipPercentage;
 
 	private SharedPreferences prefs;
+	private TextView tipLabel;
 
 	public void addPersonClick(View v) {
 		Intent i = new Intent(this, AddPersonActivity.class);
@@ -74,7 +76,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 			}
 
 			adapter.notifyDataSetChanged();
-			updateTotalAndTipValues(totalSumPeople(), tipPercentage);
+			updateTotalAndTipValues();
 		}
 	}
 
@@ -91,6 +93,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		totalDue = (TextView) findViewById(R.id.TotalDueText);
 		tipDue = (TextView) findViewById(R.id.tipInput);
 		taxDue = (TextView) findViewById(R.id.taxInput);
+		tipLabel = (TextView) findViewById(R.id.tipText);
+		tipLabel.setText(formattedTipPctLabel());
+
 		persons = new ArrayList<Person>();
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
 		setListAdapter(adapter);
@@ -155,7 +160,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		persons.remove(id);
 		adapter.notifyDataSetChanged();
 		updateTotalAndTipValues();
-		
+
 		return true;
 	}
 
@@ -196,11 +201,19 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		return sum;
 	}
 
-	private void updateDefaultValues() {
-		tipPercentage = Double.valueOf(prefs.getString("default_currency", "15"));
+	private String formattedTipPctLabel() {
+		return new String("TIP (" + tipPercentage + "%)");
 	}
-	
-	private void updateTotalAndTipValues(){
+
+	private void updateDefaultValues() {
+		tipPercentage = Float.valueOf(prefs.getString("default_tip", "15"));
+		Log.d("updateDefault", "tipperctange now" + tipPercentage);
+		if (tipLabel != null) {
+			tipLabel.setText(formattedTipPctLabel());
+		}
+	}
+
+	private void updateTotalAndTipValues() {
 		updateTotalAndTipValues(totalSumPeople(), tipPercentage);
 	}
 
