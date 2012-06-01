@@ -1,6 +1,8 @@
 package com.tiptax;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -31,8 +33,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private ArrayList<Person> persons;
 	private SharedPreferences prefs;
 
-	private float tipPercentage;
+	private float tipPercentage, tax;
 	private TextView totalDue, tipDue, taxDue, tipLabel;
+	private NumberFormat nf;
 
 	public void addPersonClick(View v) {
 		Intent i = new Intent(this, AddPersonActivity.class);
@@ -108,6 +111,12 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		tipDue = (TextView) findViewById(R.id.tipInput);
 		taxDue = (TextView) findViewById(R.id.taxInput);
 		tipLabel = (TextView) findViewById(R.id.tipText);
+
+		nf = NumberFormat.getCurrencyInstance();
+		Currency c = Currency.getInstance(prefs.getString("default_currency", "USD"));
+		nf.setMaximumFractionDigits(c.getDefaultFractionDigits());
+		nf.setCurrency(c);
+
 		updateDefaultValues();
 
 		persons = new ArrayList<Person>();
@@ -184,7 +193,8 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 			public void onClick(View v) {
 				EditText taxTotal = (EditText) taxInputDialog.findViewById(R.id.taxValueEditText);
 				if (!taxTotal.getText().toString().equals("")) {
-					taxDue.setText(taxTotal.getText().toString());
+					tax = Float.parseFloat(taxTotal.getText().toString());
+					taxDue.setText(nf.format(tax));
 					updateTotalAndTipValues();
 				}
 				taxInputDialog.dismiss();
@@ -202,6 +212,10 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	}
 
 	private void updateDefaultValues() {
+		Currency c = Currency.getInstance(prefs.getString("default_currency", "USD"));
+		nf.setMaximumFractionDigits(c.getDefaultFractionDigits());
+		nf.setCurrency(c);
+
 		tipPercentage = Float.valueOf(prefs.getString("default_tip", "15"));
 		if (tipLabel != null) {
 			tipLabel.setText(formattedTipPctLabel());
@@ -213,9 +227,8 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	}
 
 	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
-		Double taxValue = Double.parseDouble(taxDue.getText().toString());
-		tipDue.setText(Double.toString(tipPercentage * totalSumPeople / 100.0));
-		totalDue.setText(Double.toString(totalSumPeople + taxValue + (tipPercentage * totalSumPeople / 100.0)));
+		tipDue.setText(nf.format(tipPercentage * totalSumPeople / 100.0));
+		totalDue.setText(nf.format(totalSumPeople + tax + (tipPercentage * totalSumPeople / 100.0)));
 	}
 
 }
