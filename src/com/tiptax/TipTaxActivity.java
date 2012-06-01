@@ -1,6 +1,5 @@
 package com.tiptax;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import android.app.Activity;

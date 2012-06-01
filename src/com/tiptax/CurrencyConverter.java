@@ -27,11 +27,6 @@ public class CurrencyConverter {
 		this.setAmount(amount);
 	}
 
-	private HttpPost makeQuery() {
-		String query = HOST + "hl=en&q=" + amount + from + "%3D%3F" + to;
-		return new HttpPost(query);
-	}
-
 	public double convert() throws IllegalStateException, IOException, JSONException {
 
 		HttpResponse response = httpclient.execute(makeQuery());
@@ -67,16 +62,21 @@ public class CurrencyConverter {
 		return total.toString();
 	}
 
+	private HttpPost makeQuery() {
+		String query = HOST + "hl=en&q=" + amount + from + "%3D%3F" + to;
+		return new HttpPost(query);
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
 	public void setFrom(String from) {
 		this.from = from;
 	}
 
 	public void setTo(String to) {
 		this.to = to;
-	}
-
-	public void setAmount(double amount) {
-		this.amount = amount;
 	}
 
 }

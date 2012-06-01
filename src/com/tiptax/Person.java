@@ -29,20 +29,24 @@ public class Person implements Parcelable {
 		this.currency = "USD";
 	}
 
-	public Person(String name, String value) {
-		this.name = name;
-		this.value = value;
-		this.currency = "USD";
-	}
-	
 	public Person(String name, double value, String currency) {
 		this.name = name;
 		this.value = String.valueOf(value);
 		this.currency = currency;
 	}
 
+	public Person(String name, String value) {
+		this.name = name;
+		this.value = value;
+		this.currency = "USD";
+	}
+
 	public int describeContents() {
 		return 0;
+	}
+
+	public String getCurrency() {
+		return currency;
 	}
 
 	public double getDoubleValue() {
@@ -60,6 +64,11 @@ public class Person implements Parcelable {
 	private void readFromParcel(Parcel in) {
 		name = in.readString();
 		value = in.readString();
+		currency = in.readString();
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	public void setName(String name) {
@@ -73,14 +82,7 @@ public class Person implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(name);
 		dest.writeString(value);
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
+		dest.writeString(currency);
 	}
 
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Currency;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,17 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 	public PersonAdapter(Context context, int resourceID, ArrayList<Person> persons) {
 		super(context, resourceID, persons);
 		this.persons = persons;
+	}
+
+	/*
+	 * Returns a numberformat which formats a number to a given currency.
+	 */
+	public NumberFormat formatCurrencyCode(String currency) {
+		NumberFormat f = NumberFormat.getCurrencyInstance();
+		Currency c = Currency.getInstance(currency);
+		f.setMaximumFractionDigits(c.getDefaultFractionDigits());
+		f.setCurrency(c);
+		return f;
 	}
 
 	@Override
@@ -39,17 +49,5 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 			}
 		}
 		return v;
-	}
-
-	/*
-	 * Returns a numberformat which formats a number to a given currency.
-	 */
-	public NumberFormat formatCurrencyCode(String currency) {
-		NumberFormat f = NumberFormat.getCurrencyInstance();
-		Currency c = Currency.getInstance(currency);
-		f.setMaximumFractionDigits(c.getDefaultFractionDigits());
-		f.setCurrency(c);
-		Log.d("format", f.format(1234.23434));
-		return f;
 	}
 }

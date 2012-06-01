@@ -21,67 +21,7 @@ import android.widget.Toast;
 
 public class FinishActivity extends ListActivity {
 
-	private PersonAdapter adapter;
-	private ArrayList<Person> persons;
-	private double totalPersonDue, totalTipAndTaxDue;
-	private CurrencyConverter converter;
-	private SharedPreferences prefs;
-	private String currency;
-	private ProgressDialog pdg;
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.finish);
-
-		Intent i = getIntent();
-		persons = i.getParcelableArrayListExtra("persons");
-		totalTipAndTaxDue = i.getDoubleExtra("totalTipAndTaxDue", 0);
-		totalPersonDue = i.getDoubleExtra("totalPersonDue", 0);
-
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		currency = prefs.getString("default_currency", "EUR");
-		converter = new CurrencyConverter("USD", currency, 0);
-		//twoDForm = new DecimalFormat("#.##");
-
-		ListIterator<Person> pi = persons.listIterator();
-
-		while (pi.hasNext()) {
-			Person p = pi.next();
-			double nextVal = p.getDoubleValue();
-			pi.set(new Person(p.getName(), (nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue)));
-		}
-
-		adapter = new PersonAdapter(this, R.layout.personrow, persons);
-		setListAdapter(adapter);
-
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.finishmenu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-		case R.id.currconvert_menu_btn:
-			new CurrencyConvertTask().execute();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 	private class CurrencyConvertTask extends AsyncTask<String, Void, Boolean> {
-
-		@Override
-		protected void onPreExecute() {
-			pdg = ProgressDialog.show(FinishActivity.this, "Please wait...", "Converting Currencies!", true);
-		}
 
 		@Override
 		protected Boolean doInBackground(String... params) {
@@ -116,6 +56,65 @@ public class FinishActivity extends ListActivity {
 				toast.show();
 			}
 			pdg.dismiss();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			pdg = ProgressDialog.show(FinishActivity.this, "Please wait...", "Converting Currencies!", true);
+		}
+	}
+	private PersonAdapter adapter;
+	private ArrayList<Person> persons;
+	private double totalPersonDue, totalTipAndTaxDue;
+	private CurrencyConverter converter;
+	private SharedPreferences prefs;
+	private String currency;
+
+	private ProgressDialog pdg;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.finish);
+
+		Intent i = getIntent();
+		persons = i.getParcelableArrayListExtra("persons");
+		totalTipAndTaxDue = i.getDoubleExtra("totalTipAndTaxDue", 0);
+		totalPersonDue = i.getDoubleExtra("totalPersonDue", 0);
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		currency = prefs.getString("default_currency", "EUR");
+		converter = new CurrencyConverter("USD", currency, 0);
+
+		ListIterator<Person> pi = persons.listIterator();
+
+		while (pi.hasNext()) {
+			Person p = pi.next();
+			double nextVal = p.getDoubleValue();
+			pi.set(new Person(p.getName(), (nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue)));
+		}
+
+		adapter = new PersonAdapter(this, R.layout.personrow, persons);
+		setListAdapter(adapter);
+
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.finishmenu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.currconvert_menu_btn:
+			new CurrencyConvertTask().execute();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
