@@ -17,15 +17,24 @@ public class CurrencyConverter {
 
 	private static final String HOST = "http://www.google.com/ig/calculator?";
 	private static final HttpClient httpclient = new DefaultHttpClient();
+	private final String from;
+	private final String to;
+	private final double amount;
 
-	private static HttpPost makeQuery(String from, String to, double amount) {
+	public CurrencyConverter(String from, String to, double amount) {
+		this.from = from;
+		this.to = to;
+		this.amount = amount;
+	}
+
+	private HttpPost makeQuery() {
 		String query = HOST + "hl=en&q=" + amount + from + "%3D%3F" + to;
 		return new HttpPost(query);
 	}
 
-	public static double convert(String from, String to, double amount) throws IllegalStateException, IOException, JSONException {
+	public double convert() throws IllegalStateException, IOException, JSONException {
 
-		HttpResponse response = httpclient.execute(makeQuery(from, to, amount));
+		HttpResponse response = httpclient.execute(makeQuery());
 		HttpEntity entity = response.getEntity();
 		String stripedRes = null;
 
@@ -46,7 +55,7 @@ public class CurrencyConverter {
 	/*
 	 * Converts an inputStream into a String.
 	 */
-	private static String isToString(InputStream is) throws IOException {
+	private String isToString(InputStream is) throws IOException {
 		String line = "";
 		StringBuilder total = new StringBuilder();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
