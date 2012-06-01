@@ -17,14 +17,14 @@ public class CurrencyConverter {
 
 	private static final String HOST = "http://www.google.com/ig/calculator?";
 	private static final HttpClient httpclient = new DefaultHttpClient();
-	private final String from;
-	private final String to;
-	private final double amount;
+	private String from;
+	private String to;
+	private double amount;
 
 	public CurrencyConverter(String from, String to, double amount) {
-		this.from = from;
-		this.to = to;
-		this.amount = amount;
+		this.setFrom(from);
+		this.setTo(to);
+		this.setAmount(amount);
 	}
 
 	private HttpPost makeQuery() {
@@ -65,6 +65,18 @@ public class CurrencyConverter {
 		}
 
 		return total.toString();
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
+	public void setTo(String to) {
+		this.to = to;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 
 }
