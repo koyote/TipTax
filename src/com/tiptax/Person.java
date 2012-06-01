@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 public class Person implements Parcelable {
 
+	private String name;
+	private String value;
+	private String currency;
+
 	public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
 		public Person createFromParcel(Parcel in) {
 			return new Person(in);
@@ -14,9 +18,6 @@ public class Person implements Parcelable {
 			return new Person[size];
 		}
 	};
-	private String name;
-
-	private String value;
 
 	public Person(Parcel in) {
 		readFromParcel(in);
@@ -25,11 +26,19 @@ public class Person implements Parcelable {
 	public Person(String name, double value) {
 		this.name = name;
 		this.value = String.valueOf(value);
+		this.currency = "USD";
 	}
 
 	public Person(String name, String value) {
 		this.name = name;
 		this.value = value;
+		this.currency = "USD";
+	}
+	
+	public Person(String name, double value, String currency) {
+		this.name = name;
+		this.value = String.valueOf(value);
+		this.currency = currency;
 	}
 
 	public int describeContents() {
@@ -64,6 +73,14 @@ public class Person implements Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(name);
 		dest.writeString(value);
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 }

@@ -31,10 +31,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private PersonAdapter adapter;
 	private ArrayList<Person> persons;
 	private SharedPreferences prefs;
-	private TextView tipLabel;
 
 	private float tipPercentage;
-	private TextView totalDue, tipDue, taxDue;
+	private TextView totalDue, tipDue, taxDue, tipLabel;
 
 	public void addPersonClick(View v) {
 		Intent i = new Intent(this, AddPersonActivity.class);
@@ -106,13 +105,12 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		registerForContextMenu(this.getListView());
 
-
 		totalDue = (TextView) findViewById(R.id.TotalDueText);
 		tipDue = (TextView) findViewById(R.id.tipInput);
 		taxDue = (TextView) findViewById(R.id.taxInput);
 		tipLabel = (TextView) findViewById(R.id.tipText);
 		updateDefaultValues();
-		
+
 		persons = new ArrayList<Person>();
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
 		setListAdapter(adapter);
@@ -216,13 +214,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	}
 
 	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
-		// Rounding two Decimal point
-		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		Double taxValue = Double.parseDouble(taxDue.getText().toString());
-		double result = totalSumPeople + taxValue + (tipPercentage * totalSumPeople / 100.0);
-		result = Double.valueOf(twoDForm.format(result));
-		tipDue.setText(Double.toString(Double.valueOf(twoDForm.format(tipPercentage * totalSumPeople / 100.0))));
-		totalDue.setText(Double.toString(result));
+		tipDue.setText(Double.toString(tipPercentage * totalSumPeople / 100.0));
+		totalDue.setText(Double.toString(totalSumPeople + taxValue + (tipPercentage * totalSumPeople / 100.0)));
 	}
 
 }

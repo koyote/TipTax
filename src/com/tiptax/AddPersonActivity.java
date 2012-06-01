@@ -9,9 +9,8 @@ import android.widget.Toast;
 
 public class AddPersonActivity extends Activity {
 
-	private String name;
+	private String name, value;
 	private int origPos;
-	private String value;
 
 	public void addPersonOKClick(View v) {
 		name = ((EditText) findViewById(R.id.namePersonET)).getText().toString();

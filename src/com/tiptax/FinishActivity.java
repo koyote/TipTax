@@ -1,7 +1,6 @@
 package com.tiptax;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -24,12 +23,10 @@ public class FinishActivity extends ListActivity {
 
 	private PersonAdapter adapter;
 	private ArrayList<Person> persons;
-	private double totalPersonDue;
-	private double totalTipAndTaxDue;
+	private double totalPersonDue, totalTipAndTaxDue;
 	private CurrencyConverter converter;
 	private SharedPreferences prefs;
 	private String currency;
-	private DecimalFormat twoDForm;
 	private ProgressDialog pdg;
 
 	@Override
@@ -45,14 +42,14 @@ public class FinishActivity extends ListActivity {
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		currency = prefs.getString("default_currency", "EUR");
 		converter = new CurrencyConverter("USD", currency, 0);
-		twoDForm = new DecimalFormat("#.##");
+		//twoDForm = new DecimalFormat("#.##");
 
 		ListIterator<Person> pi = persons.listIterator();
 
 		while (pi.hasNext()) {
 			Person p = pi.next();
 			double nextVal = p.getDoubleValue();
-			pi.set(new Person(p.getName(), twoDForm.format((nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue))));
+			pi.set(new Person(p.getName(), (nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue)));
 		}
 
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
@@ -95,7 +92,7 @@ public class FinishActivity extends ListActivity {
 					Person p = pi.next();
 					double amount = p.getDoubleValue();
 					converter.setAmount(amount);
-					pi.set(new Person(p.getName(), twoDForm.format(converter.convert())));
+					pi.set(new Person(p.getName(), converter.convert(), currency));
 				}
 
 			} catch (IOException e) {

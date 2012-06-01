@@ -1,8 +1,11 @@
 package com.tiptax;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +35,21 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 				pn.setText(p.getName());
 			}
 			if (pv != null) {
-				pv.setText("$" + p.getValue()); // WE WILL FIND THE CURRENCY FOR
-												// THE SETTINGS AT A LATER
-												// STAGE!!
+				pv.setText(formatCurrencyCode(p.getCurrency()).format(p.getDoubleValue()));
 			}
 		}
 		return v;
+	}
+
+	/*
+	 * Returns a numberformat which formats a number to a given currency.
+	 */
+	public NumberFormat formatCurrencyCode(String currency) {
+		NumberFormat f = NumberFormat.getCurrencyInstance();
+		Currency c = Currency.getInstance(currency);
+		f.setMaximumFractionDigits(c.getDefaultFractionDigits());
+		f.setCurrency(c);
+		Log.d("format", f.format(1234.23434));
+		return f;
 	}
 }
