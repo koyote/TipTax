@@ -105,14 +105,14 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		registerForContextMenu(this.getListView());
-		updateDefaultValues();
+
 
 		totalDue = (TextView) findViewById(R.id.TotalDueText);
 		tipDue = (TextView) findViewById(R.id.tipInput);
 		taxDue = (TextView) findViewById(R.id.taxInput);
 		tipLabel = (TextView) findViewById(R.id.tipText);
-		tipLabel.setText(formattedTipPctLabel());
-
+		updateDefaultValues();
+		
 		persons = new ArrayList<Person>();
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
 		setListAdapter(adapter);
