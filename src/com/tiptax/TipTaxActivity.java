@@ -11,10 +11,13 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -82,6 +85,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
+		registerForContextMenu(this.getListView());
 		updateDefaultValues();
 
 		totalDue = (TextView) findViewById(R.id.TotalDueText);
@@ -130,6 +134,31 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		updateDefaultValues();
 	}
 
+	/*
+	 * Context menu setup for the delete command.
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+		menu.setHeaderTitle(persons.get(info.position).getName());
+		menu.add(Menu.NONE, 0, 0, R.string.delete);
+	}
+
+	/*
+	 * Called when pressing delete on an item.
+	 */
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		int id = (int) getListAdapter().getItemId(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position);
+
+		persons.remove(id);
+		adapter.notifyDataSetChanged();
+		updateTotalAndTipValues();
+		
+		return true;
+	}
+
 	public void resetAll() {
 		persons.clear();
 		totalDue.setText("0");
@@ -151,7 +180,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 				EditText taxTotal = (EditText) taxInputDialog.findViewById(R.id.taxValueEditText);
 				if (!taxTotal.getText().toString().equals("")) {
 					taxDue.setText(taxTotal.getText().toString());
-					updateTotalAndTipValues(totalSumPeople(), tipPercentage);
+					updateTotalAndTipValues();
 				}
 				taxInputDialog.dismiss();
 			}
@@ -169,6 +198,10 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 	private void updateDefaultValues() {
 		tipPercentage = Double.valueOf(prefs.getString("default_currency", "15"));
+	}
+	
+	private void updateTotalAndTipValues(){
+		updateTotalAndTipValues(totalSumPeople(), tipPercentage);
 	}
 
 	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {

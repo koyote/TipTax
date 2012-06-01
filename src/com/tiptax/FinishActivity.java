@@ -1,5 +1,6 @@
 package com.tiptax;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -25,12 +26,13 @@ public class FinishActivity extends ListActivity {
 		totalTipAndTaxDue = i.getDoubleExtra("totalTipAndTaxDue", 0);
 		totalPersonDue = i.getDoubleExtra("totalPersonDue", 0);
 
+		DecimalFormat twoDForm = new DecimalFormat("#.##");
 		ListIterator<Person> pi = persons.listIterator();
 
 		while (pi.hasNext()) {
 			Person p = pi.next();
 			double nextVal = p.getDoubleValue();
-			pi.set(new Person(p.getName(), (nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue)));
+			pi.set(new Person(p.getName(), twoDForm.format((nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue))));
 		}
 
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);

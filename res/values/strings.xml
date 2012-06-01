@@ -16,5 +16,6 @@
     <string name="d_tip">Default Tip</string>
     <string name="no_items">Please add a Person!</string>
     <string name="finish">finish</string>
+    <string name="delete">Delete</string>
 
 </resources>
