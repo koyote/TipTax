@@ -1,7 +1,10 @@
 package com.tiptax;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -117,6 +120,18 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
 		setListAdapter(adapter);
 
+		try {
+			CurrencyConverter.convert("USD", "EUR", 10);
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
