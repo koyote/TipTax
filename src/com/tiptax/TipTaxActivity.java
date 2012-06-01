@@ -39,32 +39,13 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 	public void finishClick(View v) {
 
-		ArrayList<String> names = new ArrayList<String>();
-		ArrayList<String> values = new ArrayList<String>();
-
-		for (int i = 0; i < persons.size(); i++) {
-			names.add(persons.get(i).getName());
-			values.add(persons.get(i).getValue());
-			System.out.println("Added: " + persons.get(i).getName());
-		}
-		
-		double totalPersonDue = 0;
-		for(int i =0 ; i < values.size();i++){
-			totalPersonDue += Double.parseDouble(values.get(i));
-		}
-		double totalTipAndTaxDue = Double.parseDouble(tipDue.getText().toString()) + Double.parseDouble(taxDue.getText().toString());
-		
-		for(int i =0 ; i <values.size(); i++){
-			values.set(i, Double.toString(Double.parseDouble(values.get(i))+((Double.parseDouble(values.get(i))/totalPersonDue)*totalTipAndTaxDue)));
-		}
-
 		Intent i = new Intent(this, FinishActivity.class);
 
-		i.putStringArrayListExtra("names", names);
-		i.putStringArrayListExtra("values", values);
+		i.putExtra("persons", persons);
+		i.putExtra("totalTipAndTaxDue", Double.parseDouble(taxDue.getText().toString()) + Double.parseDouble(tipDue.getText().toString()));
+		i.putExtra("totalPersonDue", totalSumPeople());
 
 		startActivity(i);
-
 	}
 
 	@Override
@@ -149,15 +130,15 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		updateDefaultValues();
 	}
 
-	public void resetAll(){
-		
+	public void resetAll() {
 		persons.clear();
 		totalDue.setText("0");
 		taxDue.setText("0");
 		tipDue.setText("0");
+
 		adapter.notifyDataSetChanged();
-		
 	}
+
 	public void taxInputClick(View v) {
 		final Dialog taxInputDialog = new Dialog(TipTaxActivity.this);
 		taxInputDialog.setContentView(R.layout.taxedit);
@@ -181,7 +162,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private double totalSumPeople() {
 		double sum = 0;
 		for (Person p : persons) {
-			sum += Double.valueOf(p.getValue());
+			sum += p.getDoubleValue();
 		}
 		return sum;
 	}
