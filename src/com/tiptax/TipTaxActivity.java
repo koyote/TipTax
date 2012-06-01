@@ -137,6 +137,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 			Intent i = new Intent(TipTaxActivity.this, TipTaxPreferences.class);
 			startActivity(i);
 			return true;
+		case R.id.reset_menu_btn:
+			resetAll();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -146,6 +149,15 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		updateDefaultValues();
 	}
 
+	public void resetAll(){
+		
+		persons.clear();
+		totalDue.setText("0");
+		taxDue.setText("0");
+		tipDue.setText("0");
+		adapter.notifyDataSetChanged();
+		
+	}
 	public void taxInputClick(View v) {
 		final Dialog taxInputDialog = new Dialog(TipTaxActivity.this);
 		taxInputDialog.setContentView(R.layout.taxedit);
