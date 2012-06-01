@@ -5,12 +5,21 @@ import android.os.Parcelable;
 
 public class Person implements Parcelable {
 
+	public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
+		public Person createFromParcel(Parcel in) {
+			return new Person(in);
+		}
+
+		public Person[] newArray(int size) {
+			return new Person[size];
+		}
+	};
 	private String name;
+
 	private String value;
 
-	public Person(String name, String value) {
-		this.name = name;
-		this.value = value;
+	public Person(Parcel in) {
+		readFromParcel(in);
 	}
 
 	public Person(String name, double value) {
@@ -18,8 +27,17 @@ public class Person implements Parcelable {
 		this.value = String.valueOf(value);
 	}
 
-	public Person(Parcel in) {
-		readFromParcel(in);
+	public Person(String name, String value) {
+		this.name = name;
+		this.value = value;
+	}
+
+	public int describeContents() {
+		return 0;
+	}
+
+	public double getDoubleValue() {
+		return Double.valueOf(value);
 	}
 
 	public String getName() {
@@ -30,8 +48,9 @@ public class Person implements Parcelable {
 		return value;
 	}
 
-	public double getDoubleValue() {
-		return Double.valueOf(value);
+	private void readFromParcel(Parcel in) {
+		name = in.readString();
+		value = in.readString();
 	}
 
 	public void setName(String name) {
@@ -42,28 +61,9 @@ public class Person implements Parcelable {
 		this.value = value;
 	}
 
-	public int describeContents() {
-		return 0;
-	}
-
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeString(name);
 		dest.writeString(value);
 	}
-
-	private void readFromParcel(Parcel in) {
-		name = in.readString();
-		value = in.readString();
-	}
-
-	public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
-		public Person createFromParcel(Parcel in) {
-			return new Person(in);
-		}
-
-		public Person[] newArray(int size) {
-			return new Person[size];
-		}
-	};
 
 }

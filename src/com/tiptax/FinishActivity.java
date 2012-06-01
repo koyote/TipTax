@@ -12,11 +12,12 @@ import android.widget.ListView;
 
 public class FinishActivity extends ListActivity {
 
-	private ArrayList<Person> persons;
 	private PersonAdapter adapter;
-	private double totalTipAndTaxDue;
+	private ArrayList<Person> persons;
 	private double totalPersonDue;
+	private double totalTipAndTaxDue;
 
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.finish);
