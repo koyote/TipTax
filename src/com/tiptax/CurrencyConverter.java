@@ -149,7 +149,7 @@ public class CurrencyConverter {
 	 * Converts from one currency to another using the saved exchange rates
 	 */
 	private double convertFromSavedEx() {
-		return exRatesMap.get(toC) / exRatesMap.get(fromC);
+		return amount * (exRatesMap.get(toC) / exRatesMap.get(fromC));
 	}
 
 	/*
