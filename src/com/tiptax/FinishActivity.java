@@ -78,15 +78,18 @@ public class FinishActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.finish);
 
+		// Handling intent
 		Intent i = getIntent();
 		persons = i.getParcelableArrayListExtra("persons");
 		totalTipAndTaxDue = i.getDoubleExtra("totalTipAndTaxDue", 0);
 		totalPersonDue = i.getDoubleExtra("totalPersonDue", 0);
 
+		// Getting the currencies and converter
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		currency = prefs.getString("default_currency", "EUR");
 		converter = new CurrencyConverter(this.getApplicationContext(), "USD", currency, 0);
 
+		// Filling up the list of persons with their respective values
 		ListIterator<Person> pi = persons.listIterator();
 
 		while (pi.hasNext()) {

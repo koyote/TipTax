@@ -37,11 +37,17 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private TextView totalDue, tipDue, taxDue, tipLabel;
 	private NumberFormat nf;
 
+	/*
+	 * Onclick for pressing add a Person
+	 */
 	public void addPersonClick(View v) {
 		Intent i = new Intent(this, AddPersonActivity.class);
 		startActivityForResult(i, NEWREQ);
 	}
 
+	/*
+	 * Onclick for pressing finish
+	 */
 	public void finishClick(View v) {
 
 		Intent i = new Intent(this, FinishActivity.class);
@@ -53,6 +59,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		startActivity(i);
 	}
 
+	/*
+	 * Formats a the TIP string.
+	 */
 	private String formattedTipPctLabel() {
 		return new String("TIP (" + tipPercentage + "%)");
 	}
@@ -103,15 +112,18 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		// Set up preferences
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		registerForContextMenu(this.getListView());
 
+		// Set up references to the different textviews
 		totalDue = (TextView) findViewById(R.id.TotalDueText);
 		tipDue = (TextView) findViewById(R.id.tipInput);
 		taxDue = (TextView) findViewById(R.id.taxInput);
 		tipLabel = (TextView) findViewById(R.id.tipText);
 
+		// Set up the numberformatter
 		nf = NumberFormat.getCurrencyInstance();
 		Currency c = Currency.getInstance(prefs.getString("default_currency", "USD"));
 		nf.setMaximumFractionDigits(c.getDefaultFractionDigits());
@@ -119,6 +131,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 		updateDefaultValues();
 
+		// Set up the listview
 		persons = new ArrayList<Person>();
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
 		setListAdapter(adapter);
@@ -154,7 +167,6 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.pref_menu_btn:
 			Intent i = new Intent(TipTaxActivity.this, TipTaxPreferences.class);
@@ -168,10 +180,16 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 	}
 
+	/*
+	 * Run if the preferences are changed!
+	 */
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		updateDefaultValues();
 	}
 
+	/*
+	 * Resets all the fields.
+	 */
 	public void resetAll() {
 		persons.clear();
 		totalDue.setText("0");
@@ -181,6 +199,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		adapter.notifyDataSetChanged();
 	}
 
+	/*
+	 * Run when the tax input is clicked
+	 */
 	public void taxInputClick(View v) {
 		final Dialog taxInputDialog = new Dialog(TipTaxActivity.this);
 		taxInputDialog.setContentView(R.layout.taxedit);
@@ -202,6 +223,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		taxInputDialog.show();
 	}
 
+	/*
+	 * Returns the total amount by adding up what each person owes
+	 */
 	private double totalSumPeople() {
 		double sum = 0;
 		for (Person p : persons) {
@@ -210,6 +234,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		return sum;
 	}
 
+	/*
+	 * Gets the preferences for tip and currency and updates the local variables
+	 */
 	private void updateDefaultValues() {
 		Currency c = Currency.getInstance(prefs.getString("default_currency", "USD"));
 		nf.setMaximumFractionDigits(c.getDefaultFractionDigits());
@@ -221,10 +248,16 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 	}
 
+	/*
+	 * Overloaded method
+	 */
 	private void updateTotalAndTipValues() {
 		updateTotalAndTipValues(totalSumPeople(), tipPercentage);
 	}
 
+	/*
+	 * Updates the texviews for Total and Tip due
+	 */
 	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
 		tip = tipPercentage * totalSumPeople / 100.0;
 		total = totalSumPeople + tax + (tipPercentage * totalSumPeople / 100.0);

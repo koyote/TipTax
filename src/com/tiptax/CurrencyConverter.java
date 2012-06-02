@@ -117,7 +117,7 @@ public class CurrencyConverter {
 	/*
 	 * Uses a free API to get pretty up-to-date exchange rates
 	 */
-	public void getExchangeRates() throws ClientProtocolException, IOException, JSONException {
+	private void getExchangeRates() throws ClientProtocolException, IOException, JSONException {
 
 		HttpResponse response = httpclient.execute(new HttpPost(OEHOST));
 		HttpEntity entity = response.getEntity();
@@ -164,6 +164,9 @@ public class CurrencyConverter {
 		return false;
 	}
 
+	/*
+	 * Creates a Google HttpPost Query
+	 */
 	private HttpPost makeQuery() {
 		String query = GOOGLEHOST + "hl=en&q=" + amount + from + "%3D%3F" + to;
 		return new HttpPost(query);

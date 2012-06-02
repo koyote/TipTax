@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-
 public class CurrencyDBWrapper {
 	private SQLiteDatabase db;
 	private CurrencyDB dbHelper;
@@ -17,7 +16,6 @@ public class CurrencyDBWrapper {
 
 	private static final int CURRENCY_IDX = 1;
 	private static final int RATE_IDX = 2;
-
 
 	/*
 	 * Constructor creates a new reference to the DB Helper
@@ -39,7 +37,6 @@ public class CurrencyDBWrapper {
 	public void close() {
 		dbHelper.close();
 	}
-
 
 	/*
 	 * Adds a Currency to the DB
@@ -64,11 +61,11 @@ public class CurrencyDBWrapper {
 	 * Deletes a Currency according to its ID
 	 */
 	public void deleteItem(long iid) {
-		db.delete(CurrencyDB.CURRENCIES_TABLE, CurrencyDB.COLUMN_ID  + " = '" + iid + "'", null);
+		db.delete(CurrencyDB.CURRENCIES_TABLE, CurrencyDB.COLUMN_ID + " = '" + iid + "'", null);
 	}
 
 	/*
-	 * Returns an HashMap of all the currencies and their rates
+	 * Returns a HashMap of all the currencies and their rates
 	 */
 	public HashMap<String, Double> getAll() {
 		HashMap<String, Double> items = new HashMap<String, Double>();
@@ -84,6 +81,4 @@ public class CurrencyDBWrapper {
 		cursor.close();
 		return items;
 	}
-
-
 }
