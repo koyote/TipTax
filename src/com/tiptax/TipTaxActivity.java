@@ -29,13 +29,13 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private static final int EDITREQ = 1;
 	private static final int NEWREQ = 0;
 
-	private PersonAdapter adapter;
-	private ArrayList<Person> persons;
+	private PersonAdapter personAdapter;
+	private ArrayList<Person> personList;
 	private SharedPreferences prefs;
 
 	private double tipPercentage, tax, tip, total;
 	private TextView totalDue, tipDue, taxDue, tipLabel;
-	private NumberFormat nf;
+	private NumberFormat numberFormat;
 
 	/*
 	 * Onclick for pressing add a Person
@@ -52,7 +52,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 		Intent i = new Intent(this, FinishActivity.class);
 
-		i.putExtra("persons", persons);
+		i.putExtra("persons", personList);
 		i.putExtra("totalTipAndTaxDue", tax + tip);
 		i.putExtra("totalPersonDue", totalSumPeople());
 
@@ -76,19 +76,19 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
 			switch (requestCode) {
 			case NEWREQ:
-				persons.add(new Person(name, value));
+				personList.add(new Person(name, value));
 				break;
 			case EDITREQ:
 				int pos = data.getIntExtra("origPos", -1);
 				if (pos != -1) {
-					Person p = persons.get(pos);
+					Person p = personList.get(pos);
 					p.setName(name);
 					p.setValue(value);
 				}
 				break;
 			}
 
-			adapter.notifyDataSetChanged();
+			personAdapter.notifyDataSetChanged();
 			updateTotalAndTipValues();
 		}
 	}
@@ -100,8 +100,8 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	public boolean onContextItemSelected(MenuItem item) {
 		int id = (int) getListAdapter().getItemId(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position);
 
-		persons.remove(id);
-		adapter.notifyDataSetChanged();
+		personList.remove(id);
+		personAdapter.notifyDataSetChanged();
 		updateTotalAndTipValues();
 
 		return true;
@@ -124,17 +124,17 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		tipLabel = (TextView) findViewById(R.id.tipText);
 
 		// Set up the numberformatter
-		nf = NumberFormat.getCurrencyInstance();
+		numberFormat = NumberFormat.getCurrencyInstance();
 		Currency c = Currency.getInstance(prefs.getString("default_currency", "USD"));
-		nf.setMaximumFractionDigits(c.getDefaultFractionDigits());
-		nf.setCurrency(c);
+		numberFormat.setMaximumFractionDigits(c.getDefaultFractionDigits());
+		numberFormat.setCurrency(c);
 
 		updateDefaultValues();
 
 		// Set up the listview
-		persons = new ArrayList<Person>();
-		adapter = new PersonAdapter(this, R.layout.personrow, persons);
-		setListAdapter(adapter);
+		personList = new ArrayList<Person>();
+		personAdapter = new PersonAdapter(this, R.layout.personrow, personList);
+		setListAdapter(personAdapter);
 	}
 
 	/*
@@ -144,7 +144,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
-		menu.setHeaderTitle(persons.get(info.position).getName());
+		menu.setHeaderTitle(personList.get(info.position).getName());
 		menu.add(Menu.NONE, 0, 0, R.string.delete);
 	}
 
@@ -159,8 +159,8 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Intent i = new Intent(v.getContext(), AddPersonActivity.class);
-		i.putExtra("name", persons.get(position).getName());
-		i.putExtra("value", persons.get(position).getValue());
+		i.putExtra("name", personList.get(position).getName());
+		i.putExtra("value", personList.get(position).getValue());
 		i.putExtra("origPos", position);
 		startActivityForResult(i, EDITREQ);
 	}
@@ -191,12 +191,12 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	 * Resets all the fields.
 	 */
 	public void resetAll() {
-		persons.clear();
+		personList.clear();
 		totalDue.setText("0");
 		taxDue.setText("0");
 		tipDue.setText("0");
 
-		adapter.notifyDataSetChanged();
+		personAdapter.notifyDataSetChanged();
 	}
 
 	/*
@@ -214,7 +214,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 				EditText taxTotal = (EditText) taxInputDialog.findViewById(R.id.taxValueEditText);
 				if (!taxTotal.getText().toString().equals("")) {
 					tax = Float.parseFloat(taxTotal.getText().toString());
-					taxDue.setText(nf.format(tax));
+					taxDue.setText(numberFormat.format(tax));
 					updateTotalAndTipValues();
 				}
 				taxInputDialog.dismiss();
@@ -228,7 +228,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	 */
 	private double totalSumPeople() {
 		double sum = 0;
-		for (Person p : persons) {
+		for (Person p : personList) {
 			sum += p.getDoubleValue();
 		}
 		return sum;
@@ -239,8 +239,8 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	 */
 	private void updateDefaultValues() {
 		Currency c = Currency.getInstance(prefs.getString("default_currency", "USD"));
-		nf.setMaximumFractionDigits(c.getDefaultFractionDigits());
-		nf.setCurrency(c);
+		numberFormat.setMaximumFractionDigits(c.getDefaultFractionDigits());
+		numberFormat.setCurrency(c);
 
 		tipPercentage = Float.valueOf(prefs.getString("default_tip", "15"));
 		if (tipLabel != null) {
@@ -261,8 +261,8 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
 		tip = tipPercentage * totalSumPeople / 100.0;
 		total = totalSumPeople + tax + (tipPercentage * totalSumPeople / 100.0);
-		tipDue.setText(nf.format(tip));
-		totalDue.setText(nf.format(total));
+		tipDue.setText(numberFormat.format(tip));
+		totalDue.setText(numberFormat.format(total));
 	}
 
 }

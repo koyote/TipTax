@@ -26,16 +26,16 @@ public class CurrencyConverter {
 
 	private static final String GOOGLEHOST = "http://www.google.com/ig/calculator?";
 	private static final String OEHOST = "http://openexchangerates.org/latest.json";
-	private static final HttpClient httpclient = new DefaultHttpClient();
+	private static final HttpClient httpClient = new DefaultHttpClient();
 	private static final long weekInSeconds = 604800;
 
-	private String from;
-	private String to;
+	private String fromC;
+	private String toC;
 	private double amount;
 	private final Context ctx;
 	private HashMap<String, Double> exRatesMap;
 	private SharedPreferences prefs;
-	private CurrencyDBWrapper cdb;
+	private CurrencyDBWrapper cDB;
 
 	public CurrencyConverter(Context ctx, String from, String to, double amount) {
 		this.ctx = ctx;
@@ -44,9 +44,9 @@ public class CurrencyConverter {
 		this.setAmount(amount);
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-		cdb = new CurrencyDBWrapper(ctx);
-		cdb.open();
-		exRatesMap = cdb.getAll();
+		cDB = new CurrencyDBWrapper(ctx);
+		cDB.open();
+		exRatesMap = cDB.getAllCurrencies();
 	}
 
 	/*
@@ -68,7 +68,7 @@ public class CurrencyConverter {
 				}
 			}
 
-			HttpResponse response = httpclient.execute(makeQuery());
+			HttpResponse response = httpClient.execute(makeQuery());
 			HttpEntity entity = response.getEntity();
 			String stripedRes = null;
 
@@ -89,7 +89,7 @@ public class CurrencyConverter {
 		}
 
 		// No internet but we have saved exchange rates we can use!
-		else if ((exRatesMap = cdb.getAll()) != null || !exRatesMap.isEmpty()) {
+		else if ((exRatesMap = cDB.getAllCurrencies()) != null || !exRatesMap.isEmpty()) {
 			return convertFromSavedEx();
 		}
 
@@ -119,7 +119,7 @@ public class CurrencyConverter {
 	 */
 	private void getExchangeRates() throws ClientProtocolException, IOException, JSONException {
 
-		HttpResponse response = httpclient.execute(new HttpPost(OEHOST));
+		HttpResponse response = httpClient.execute(new HttpPost(OEHOST));
 		HttpEntity entity = response.getEntity();
 
 		if (entity != null) {
@@ -140,7 +140,7 @@ public class CurrencyConverter {
 
 			while (it.hasNext()) {
 				String next = it.next().toString();
-				cdb.addCurrency(next, rates.getDouble(next));
+				cDB.addCurrency(next, rates.getDouble(next));
 			}
 		}
 	}
@@ -149,7 +149,7 @@ public class CurrencyConverter {
 	 * Converts from one currency to another using the saved exchange rates
 	 */
 	private double convertFromSavedEx() {
-		return exRatesMap.get(to) / exRatesMap.get(from);
+		return exRatesMap.get(toC) / exRatesMap.get(fromC);
 	}
 
 	/*
@@ -168,7 +168,7 @@ public class CurrencyConverter {
 	 * Creates a Google HttpPost Query
 	 */
 	private HttpPost makeQuery() {
-		String query = GOOGLEHOST + "hl=en&q=" + amount + from + "%3D%3F" + to;
+		String query = GOOGLEHOST + "hl=en&q=" + amount + fromC + "%3D%3F" + toC;
 		return new HttpPost(query);
 	}
 
@@ -177,11 +177,11 @@ public class CurrencyConverter {
 	}
 
 	public void setFrom(String from) {
-		this.from = from;
+		this.fromC = from;
 	}
 
 	public void setTo(String to) {
-		this.to = to;
+		this.toC = to;
 	}
 
 }

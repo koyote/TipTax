@@ -12,11 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class PersonAdapter extends ArrayAdapter<Person> {
-	private ArrayList<Person> persons;
+	private ArrayList<Person> personList;
 
-	public PersonAdapter(Context context, int resourceID, ArrayList<Person> persons) {
-		super(context, resourceID, persons);
-		this.persons = persons;
+	public PersonAdapter(Context context, int resourceID, ArrayList<Person> personList) {
+		super(context, resourceID, personList);
+		this.personList = personList;
 	}
 
 	/*
@@ -37,7 +37,7 @@ public class PersonAdapter extends ArrayAdapter<Person> {
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.personrow, null);
 		}
-		Person p = persons.get(position);
+		Person p = personList.get(position);
 		if (p != null) {
 			TextView pn = (TextView) v.findViewById(R.id.personName);
 			TextView pv = (TextView) v.findViewById(R.id.personValue);

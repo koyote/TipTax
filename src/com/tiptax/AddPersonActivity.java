@@ -9,26 +9,26 @@ import android.widget.Toast;
 
 public class AddPersonActivity extends Activity {
 
-	private String name, value;
+	private String personName, personValue;
 	private int origPos;
 
 	public void addPersonOKClick(View v) {
-		name = ((EditText) findViewById(R.id.namePersonET)).getText().toString();
-		value = ((EditText) findViewById(R.id.valuePersonET)).getText().toString();
+		personName = ((EditText) findViewById(R.id.namePersonET)).getText().toString();
+		personValue = ((EditText) findViewById(R.id.valuePersonET)).getText().toString();
 
-		if (name.equals("")) {
+		if (personName.equals("")) {
 			Toast toast = Toast.makeText(getApplicationContext(), "Please enter a name!", Toast.LENGTH_LONG);
 			toast.show();
 			return;
-		} else if (value.equals("")) {
+		} else if (personValue.equals("")) {
 			Toast toast = Toast.makeText(getApplicationContext(), "Please enter a value!", Toast.LENGTH_LONG);
 			toast.show();
 			return;
 		}
 
 		Intent in = new Intent();
-		in.putExtra("name", name);
-		in.putExtra("value", value);
+		in.putExtra("name", personName);
+		in.putExtra("value", personValue);
 		in.putExtra("origPos", origPos);
 		setResult(Activity.RESULT_OK, in);
 		finish();
@@ -44,12 +44,12 @@ public class AddPersonActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		Intent i = getIntent();
-		name = i.getStringExtra("name");
-		value = i.getStringExtra("value");
+		personName = i.getStringExtra("name");
+		personValue = i.getStringExtra("value");
 		origPos = i.getIntExtra("origPos", -1);
 
-		((EditText) findViewById(R.id.namePersonET)).setText(name);
-		((EditText) findViewById(R.id.valuePersonET)).setText(value);
+		((EditText) findViewById(R.id.namePersonET)).setText(personName);
+		((EditText) findViewById(R.id.valuePersonET)).setText(personValue);
 	}
 
 }

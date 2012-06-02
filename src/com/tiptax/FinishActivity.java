@@ -26,7 +26,7 @@ public class FinishActivity extends ListActivity {
 		@Override
 		protected Boolean doInBackground(String... params) {
 			try {
-				ListIterator<Person> pi = persons.listIterator();
+				ListIterator<Person> pi = personList.listIterator();
 
 				while (pi.hasNext()) {
 					Person p = pi.next();
@@ -49,7 +49,7 @@ public class FinishActivity extends ListActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result) {
-				adapter.notifyDataSetChanged();
+				personAdapter.notifyDataSetChanged();
 			} else {
 				Toast toast = Toast.makeText(getApplicationContext(),
 						"Something went wrong getting currency convertion data. Please check your internet connection!", Toast.LENGTH_LONG);
@@ -64,8 +64,8 @@ public class FinishActivity extends ListActivity {
 		}
 	}
 
-	private PersonAdapter adapter;
-	private ArrayList<Person> persons;
+	private PersonAdapter personAdapter;
+	private ArrayList<Person> personList;
 	private double totalPersonDue, totalTipAndTaxDue;
 	private CurrencyConverter converter;
 	private SharedPreferences prefs;
@@ -80,7 +80,7 @@ public class FinishActivity extends ListActivity {
 
 		// Handling intent
 		Intent i = getIntent();
-		persons = i.getParcelableArrayListExtra("persons");
+		personList = i.getParcelableArrayListExtra("persons");
 		totalTipAndTaxDue = i.getDoubleExtra("totalTipAndTaxDue", 0);
 		totalPersonDue = i.getDoubleExtra("totalPersonDue", 0);
 
@@ -90,7 +90,7 @@ public class FinishActivity extends ListActivity {
 		converter = new CurrencyConverter(this.getApplicationContext(), "USD", currency, 0);
 
 		// Filling up the list of persons with their respective values
-		ListIterator<Person> pi = persons.listIterator();
+		ListIterator<Person> pi = personList.listIterator();
 
 		while (pi.hasNext()) {
 			Person p = pi.next();
@@ -98,8 +98,8 @@ public class FinishActivity extends ListActivity {
 			pi.set(new Person(p.getName(), (nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue)));
 		}
 
-		adapter = new PersonAdapter(this, R.layout.personrow, persons);
-		setListAdapter(adapter);
+		personAdapter = new PersonAdapter(this, R.layout.personrow, personList);
+		setListAdapter(personAdapter);
 
 	}
 

@@ -60,14 +60,14 @@ public class CurrencyDBWrapper {
 	/*
 	 * Deletes a Currency according to its ID
 	 */
-	public void deleteItem(long iid) {
+	public void deleteCurrency(long iid) {
 		db.delete(CurrencyDB.CURRENCIES_TABLE, CurrencyDB.COLUMN_ID + " = '" + iid + "'", null);
 	}
 
 	/*
 	 * Returns a HashMap of all the currencies and their rates
 	 */
-	public HashMap<String, Double> getAll() {
+	public HashMap<String, Double> getAllCurrencies() {
 		HashMap<String, Double> items = new HashMap<String, Double>();
 
 		Cursor cursor = db.query(CurrencyDB.CURRENCIES_TABLE, columns, null, null, null, null, null);
