@@ -74,6 +74,15 @@ public class FinishActivity extends ListActivity {
 	private ProgressDialog pdg;
 
 	@Override
+	public void onPause() {
+		super.onPause();
+
+		if (pdg != null) {
+			pdg.dismiss(); // without this line, everything goes to shit!
+		}
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.finish);

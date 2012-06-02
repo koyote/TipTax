@@ -89,7 +89,7 @@ public class CurrencyConverter {
 		}
 
 		// No internet but we have saved exchange rates we can use!
-		else if ((exRatesMap = cDB.getAllCurrencies()) != null || !exRatesMap.isEmpty()) {
+		else if ((exRatesMap = cDB.getAllCurrencies()) != null && !exRatesMap.isEmpty()) {
 			return convertFromSavedEx();
 		}
 
