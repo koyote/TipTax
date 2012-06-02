@@ -17,26 +17,36 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 
 public class CurrencyConverter {
 
 	private static final String GOOGLEHOST = "http://www.google.com/ig/calculator?";
 	private static final String OEHOST = "http://openexchangerates.org/latest.json";
 	private static final HttpClient httpclient = new DefaultHttpClient();
+	private static final long weekInSeconds = 604800;
+
 	private String from;
 	private String to;
 	private double amount;
 	private final Context ctx;
 	private HashMap<String, Double> exRatesMap;
-	private static final long weekInSeconds = 604800;
+	private SharedPreferences prefs;
+	private CurrencyDBWrapper cdb;
 
 	public CurrencyConverter(Context ctx, String from, String to, double amount) {
 		this.ctx = ctx;
 		this.setFrom(from);
 		this.setTo(to);
 		this.setAmount(amount);
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+		cdb = new CurrencyDBWrapper(ctx);
+		cdb.open();
+		exRatesMap = cdb.getAll();
 	}
 
 	/*
@@ -48,7 +58,8 @@ public class CurrencyConverter {
 
 			// Checking if we have a copy of the exchange rates yet, or if they
 			// are over a week old
-			if (exRatesMap == null || ((int) (System.currentTimeMillis() / 1000L) - exRatesMap.get("timestamp")) > weekInSeconds) {
+			if (exRatesMap == null || exRatesMap.isEmpty()
+					|| ((int) (System.currentTimeMillis() / 1000L) - prefs.getLong("timestamp", (System.currentTimeMillis() / 1000L))) > weekInSeconds) {
 				try {
 					getExchangeRates();
 				} catch (Exception e) {
@@ -78,7 +89,7 @@ public class CurrencyConverter {
 		}
 
 		// No internet but we have saved exchange rates we can use!
-		else if (exRatesMap != null) {
+		else if ((exRatesMap = cdb.getAll()) != null || !exRatesMap.isEmpty()) {
 			return convertFromSavedEx();
 		}
 
@@ -108,7 +119,6 @@ public class CurrencyConverter {
 	 */
 	public void getExchangeRates() throws ClientProtocolException, IOException, JSONException {
 
-		exRatesMap = new HashMap<String, Double>();
 		HttpResponse response = httpclient.execute(new HttpPost(OEHOST));
 		HttpEntity entity = response.getEntity();
 
@@ -119,13 +129,18 @@ public class CurrencyConverter {
 			instream.close();
 
 			JSONObject json = new JSONObject(result);
-			exRatesMap.put("timestamp", json.getDouble("timestamp"));
+
+			// Saving timestamp
+			SharedPreferences.Editor ed = prefs.edit();
+			ed.putLong("timestamp", json.getLong("timestamp"));
+			ed.commit();
+
 			JSONObject rates = json.getJSONObject("rates");
 			Iterator<?> it = rates.keys();
 
 			while (it.hasNext()) {
 				String next = it.next().toString();
-				exRatesMap.put(next, rates.getDouble(next));
+				cdb.addCurrency(next, rates.getDouble(next));
 			}
 		}
 	}

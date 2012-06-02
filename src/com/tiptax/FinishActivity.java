@@ -63,6 +63,7 @@ public class FinishActivity extends ListActivity {
 			pdg = ProgressDialog.show(FinishActivity.this, "Please wait...", "Converting Currencies!", true);
 		}
 	}
+
 	private PersonAdapter adapter;
 	private ArrayList<Person> persons;
 	private double totalPersonDue, totalTipAndTaxDue;
@@ -84,7 +85,7 @@ public class FinishActivity extends ListActivity {
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		currency = prefs.getString("default_currency", "EUR");
-		converter = new CurrencyConverter(this.getApplicationContext(),"USD", currency, 0);
+		converter = new CurrencyConverter(this.getApplicationContext(), "USD", currency, 0);
 
 		ListIterator<Person> pi = persons.listIterator();
 

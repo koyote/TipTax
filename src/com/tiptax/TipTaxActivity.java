@@ -1,12 +1,8 @@
 package com.tiptax;
 
-import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
-
-import org.apache.http.client.ClientProtocolException;
-import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -37,7 +33,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	private ArrayList<Person> persons;
 	private SharedPreferences prefs;
 
-	private float tipPercentage, tax;
+	private double tipPercentage, tax, tip, total;
 	private TextView totalDue, tipDue, taxDue, tipLabel;
 	private NumberFormat nf;
 
@@ -51,7 +47,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		Intent i = new Intent(this, FinishActivity.class);
 
 		i.putExtra("persons", persons);
-		i.putExtra("totalTipAndTaxDue", Double.parseDouble(taxDue.getText().toString()) + Double.parseDouble(tipDue.getText().toString()));
+		i.putExtra("totalTipAndTaxDue", tax + tip);
 		i.putExtra("totalPersonDue", totalSumPeople());
 
 		startActivity(i);
@@ -126,20 +122,6 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		persons = new ArrayList<Person>();
 		adapter = new PersonAdapter(this, R.layout.personrow, persons);
 		setListAdapter(adapter);
-
-		CurrencyConverter cc = new CurrencyConverter(this.getApplicationContext(),"USD", "EUR", 0);
-		try {
-			cc.getExchangeRates();
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/*
@@ -244,8 +226,10 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	}
 
 	private void updateTotalAndTipValues(double totalSumPeople, double tipPercentage) {
-		tipDue.setText(nf.format(tipPercentage * totalSumPeople / 100.0));
-		totalDue.setText(nf.format(totalSumPeople + tax + (tipPercentage * totalSumPeople / 100.0)));
+		tip = tipPercentage * totalSumPeople / 100.0;
+		total = totalSumPeople + tax + (tipPercentage * totalSumPeople / 100.0);
+		tipDue.setText(nf.format(tip));
+		totalDue.setText(nf.format(total));
 	}
 
 }
