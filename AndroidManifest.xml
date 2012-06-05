@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".AddPersonActivity"
-            android:label="@string/app_name" >
+            android:label="@string/add_p" >
         </activity>
         <activity
             android:name=".TipTaxPreferences"

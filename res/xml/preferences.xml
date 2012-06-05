@@ -5,8 +5,8 @@
         android:summary="Change currency"
         android:title="Currency" >
         <ListPreference
-            android:entries="@array/defaultCurrencies"
-            android:entryValues="@array/defaultCurrencies"
+            android:entries="@array/defaultCurrenciesNames"
+            android:entryValues="@array/defaultCurrenciesValues"
             android:key="default_currency"
             android:summary="What should be your default currency?"
             android:title="Default currency" />

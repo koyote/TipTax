@@ -3,6 +3,7 @@ package com.tiptax;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.ListIterator;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -77,6 +78,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 			switch (requestCode) {
 			case NEWREQ:
 				personList.add(new Person(name, value));
+				updateCurrency();
 				break;
 			case EDITREQ:
 				int pos = data.getIntExtra("origPos", -1);
@@ -185,6 +187,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	 */
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		updateDefaultValues();
+		updateCurrency();
 	}
 
 	/*
@@ -246,6 +249,22 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		if (tipLabel != null) {
 			tipLabel.setText(formattedTipPctLabel());
 		}
+	}
+
+	private void updateCurrency(){
+
+
+		ListIterator<Person> pi = personList.listIterator();
+
+		while (pi.hasNext()) {
+			Person p = pi.next();
+			pi.set(new Person(p.getName(), p.getDoubleValue(), prefs.getString("default_currency", "USD")));
+		}
+		personAdapter.notifyDataSetChanged();
+
+		tipDue.setText(numberFormat.format(tip));
+		totalDue.setText(numberFormat.format(total));
+
 	}
 
 	/*

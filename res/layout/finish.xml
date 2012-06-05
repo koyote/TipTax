@@ -9,7 +9,20 @@
         android:id="@+id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#808080"/>
+        android:background="#808080" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/convertCurrencyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="convertCurrencyClick"
+            android:text="@string/convert_currency" />
+    </LinearLayout>
 
 </LinearLayout>

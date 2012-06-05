@@ -6,17 +6,25 @@ import java.util.ListIterator;
 
 import org.json.JSONException;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 public class FinishActivity extends ListActivity {
@@ -32,7 +40,7 @@ public class FinishActivity extends ListActivity {
 					Person p = pi.next();
 					double amount = p.getDoubleValue();
 					converter.setAmount(amount);
-					pi.set(new Person(p.getName(), converter.convert(), currency));
+					pi.set(new Person(p.getName(), converter.convert(), currencyTo));
 				}
 
 			} catch (IOException e) {
@@ -51,8 +59,7 @@ public class FinishActivity extends ListActivity {
 			if (result) {
 				personAdapter.notifyDataSetChanged();
 			} else {
-				Toast toast = Toast.makeText(getApplicationContext(),
-						"Something went wrong getting currency convertion data. Please check your internet connection!", Toast.LENGTH_LONG);
+				Toast toast = Toast.makeText(getApplicationContext(), "Something went wrong getting currency convertion data. Please check your internet connection!", Toast.LENGTH_LONG);
 				toast.show();
 			}
 			pdg.dismiss();
@@ -69,7 +76,7 @@ public class FinishActivity extends ListActivity {
 	private double totalPersonDue, totalTipAndTaxDue;
 	private CurrencyConverter converter;
 	private SharedPreferences prefs;
-	private String currency;
+	private String currencyTo, currencyFrom;
 
 	private ProgressDialog pdg;
 
@@ -95,8 +102,9 @@ public class FinishActivity extends ListActivity {
 
 		// Getting the currencies and converter
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		currency = prefs.getString("default_currency", "EUR");
-		converter = new CurrencyConverter(this.getApplicationContext(), "USD", currency, 0);
+
+		// Getting the default currency
+		currencyFrom = prefs.getString("default_currency", "USD");
 
 		// Filling up the list of persons with their respective values
 		ListIterator<Person> pi = personList.listIterator();
@@ -104,7 +112,7 @@ public class FinishActivity extends ListActivity {
 		while (pi.hasNext()) {
 			Person p = pi.next();
 			double nextVal = p.getDoubleValue();
-			pi.set(new Person(p.getName(), (nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue)));
+			pi.set(new Person(p.getName(), (nextVal + (nextVal / totalPersonDue) * totalTipAndTaxDue), p.getCurrency()));
 		}
 
 		personAdapter = new PersonAdapter(this, R.layout.personrow, personList);
@@ -117,6 +125,30 @@ public class FinishActivity extends ListActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.finishmenu, menu);
 		return true;
+	}
+
+	public void convertCurrencyClick(View V) {
+
+		final String[] currencyArrayNames = getResources().getStringArray(R.array.defaultCurrenciesNames);
+		final String[] currencyArrayValues = getResources().getStringArray(R.array.defaultCurrenciesValues);
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Pick a currency to convert to");
+		builder.setItems(currencyArrayNames, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				currencyTo = currencyArrayValues[item];
+				System.out.println("CONVERTING: " + currencyFrom + " --> " + currencyTo);
+				converter = new CurrencyConverter(FinishActivity.this, currencyFrom, currencyTo, 0);
+				//different currencies check
+				if (!currencyFrom.equals(currencyTo)) {
+					new CurrencyConvertTask().execute();
+				}
+				currencyFrom = currencyTo; // this allows new conversion on same
+											// interface.
+			}
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	@Override
