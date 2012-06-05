@@ -198,6 +198,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		totalDue.setText("0");
 		taxDue.setText("0");
 		tipDue.setText("0");
+		tax = tip = total = 0;
 
 		personAdapter.notifyDataSetChanged();
 	}

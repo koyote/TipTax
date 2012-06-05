@@ -25,6 +25,13 @@ public class AddPersonActivity extends Activity {
 			toast.show();
 			return;
 		}
+		try {
+			Double.parseDouble(personValue);
+		} catch (NumberFormatException nfe) {
+			Toast toast = Toast.makeText(getApplicationContext(), "Please enter a number!", Toast.LENGTH_LONG);
+			toast.show();
+			return;
+		}
 
 		Intent in = new Intent();
 		in.putExtra("name", personName);
