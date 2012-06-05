@@ -2,17 +2,25 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory
-        android:summary="Change currency"
+        android:summary="Currency Exchange Options"
         android:title="Currency" >
         <ListPreference
+            android:defaultValue="USD"
             android:entries="@array/defaultCurrenciesNames"
             android:entryValues="@array/defaultCurrenciesValues"
             android:key="default_currency"
             android:summary="What should be your default currency?"
             android:title="Default currency" />
+        <ListPreference
+            android:defaultValue="604800"
+            android:entries="@array/defaultUpdateNames"
+            android:entryValues="@array/defaultUpdateValues"
+            android:key="default_updatefreq"
+            android:summary="How often should the exchange rates be updated?"
+            android:title="Update Frequency" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:summary="Change tip"
+        android:summary="Tip Options"
         android:title="Tip" >
         <ListPreference
             android:defaultValue="15"

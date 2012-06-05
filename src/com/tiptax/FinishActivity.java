@@ -9,7 +9,6 @@ import org.json.JSONException;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,14 +16,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.Toast;
 
 public class FinishActivity extends ListActivity {
@@ -59,7 +54,8 @@ public class FinishActivity extends ListActivity {
 			if (result) {
 				personAdapter.notifyDataSetChanged();
 			} else {
-				Toast toast = Toast.makeText(getApplicationContext(), "Something went wrong getting currency convertion data. Please check your internet connection!", Toast.LENGTH_LONG);
+				Toast toast = Toast.makeText(getApplicationContext(),
+						"Something went wrong getting currency convertion data. Please check your internet connection!", Toast.LENGTH_LONG);
 				toast.show();
 			}
 			pdg.dismiss();
@@ -118,6 +114,8 @@ public class FinishActivity extends ListActivity {
 		personAdapter = new PersonAdapter(this, R.layout.personrow, personList);
 		setListAdapter(personAdapter);
 
+		converter = new CurrencyConverter(FinishActivity.this, currencyFrom, currencyTo, 0);
+
 	}
 
 	@Override
@@ -137,9 +135,8 @@ public class FinishActivity extends ListActivity {
 		builder.setItems(currencyArrayNames, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				currencyTo = currencyArrayValues[item];
-				System.out.println("CONVERTING: " + currencyFrom + " --> " + currencyTo);
-				converter = new CurrencyConverter(FinishActivity.this, currencyFrom, currencyTo, 0);
-				//different currencies check
+				converter.setFrom(currencyFrom);
+				converter.setTo(currencyTo);
 				if (!currencyFrom.equals(currencyTo)) {
 					new CurrencyConvertTask().execute();
 				}

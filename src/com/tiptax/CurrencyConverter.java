@@ -24,10 +24,8 @@ import android.preference.PreferenceManager;
 
 public class CurrencyConverter {
 
-	private static final String GOOGLEHOST = "http://www.google.com/ig/calculator?";
 	private static final String OEHOST = "http://openexchangerates.org/latest.json";
 	private static final HttpClient httpClient = new DefaultHttpClient();
-	private static final long weekInSeconds = 604800;
 
 	private String fromC;
 	private String toC;
@@ -36,6 +34,7 @@ public class CurrencyConverter {
 	private HashMap<String, Double> exRatesMap;
 	private SharedPreferences prefs;
 	private CurrencyDBWrapper cDB;
+	private long updateFreq;
 
 	public CurrencyConverter(Context ctx, String from, String to, double amount) {
 		this.ctx = ctx;
@@ -44,57 +43,37 @@ public class CurrencyConverter {
 		this.setAmount(amount);
 
 		prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+		updateFreq = Long.valueOf(prefs.getString("default_updatefreq", "604800"));
 		cDB = new CurrencyDBWrapper(ctx);
+
 		cDB.open();
 		exRatesMap = cDB.getAllCurrencies();
+		cDB.close();
 	}
 
 	/*
 	 * Uses google to convert currencies immediately
 	 */
 	public double convert() throws IllegalStateException, IOException, JSONException {
+		cDB.open();
 
 		if (isOnline()) {
-
 			// Checking if we have a copy of the exchange rates yet, or if they
-			// are over a week old
+			// are old
 			if (exRatesMap == null || exRatesMap.isEmpty()
-					|| ((int) (System.currentTimeMillis() / 1000L) - prefs.getLong("timestamp", (System.currentTimeMillis() / 1000L))) > weekInSeconds) {
-				try {
-					getExchangeRates();
-				} catch (Exception e) {
-					// we don't care about messups here, we'll just continue
-					// with the normal convert
-				}
+					|| ((int) (System.currentTimeMillis() / 1000L) - prefs.getLong("timestamp", (System.currentTimeMillis() / 1000L))) > updateFreq) {
+				getExchangeRates();
 			}
-
-			HttpResponse response = httpClient.execute(makeQuery());
-			HttpEntity entity = response.getEntity();
-			String stripedRes = null;
-
-			if (entity != null) {
-
-				InputStream instream = entity.getContent();
-				String result = isToString(instream);
-				instream.close();
-
-				JSONObject json = new JSONObject(result);
-
-				// Google returns the currency name, so we need to get rid of
-				// that
-				stripedRes = json.getString("rhs").replaceAll("[^\\d.]", "");
-
-			}
-			return Double.parseDouble(stripedRes);
 		}
 
-		// No internet but we have saved exchange rates we can use!
-		else if ((exRatesMap = cDB.getAllCurrencies()) != null && !exRatesMap.isEmpty()) {
+		// Lets convert that stuff!
+		if ((exRatesMap = cDB.getAllCurrencies()) != null && !exRatesMap.isEmpty()) {
+			cDB.close();
 			return convertFromSavedEx();
 		}
-
-		// No internet and no saved rates = no currency convertion possible :(F
+		// No internet and no saved rates = no currency convertion possible :(
 		else {
+			cDB.close();
 			throw new IOException("No internet or saved exchange rates!");
 		}
 	}
@@ -115,7 +94,8 @@ public class CurrencyConverter {
 	}
 
 	/*
-	 * Uses a free API to get pretty up-to-date exchange rates
+	 * Uses a free API to get pretty up-to-date exchange rates and puts them
+	 * into our database
 	 */
 	private void getExchangeRates() throws ClientProtocolException, IOException, JSONException {
 
@@ -138,10 +118,12 @@ public class CurrencyConverter {
 			JSONObject rates = json.getJSONObject("rates");
 			Iterator<?> it = rates.keys();
 
+			cDB.open();
 			while (it.hasNext()) {
 				String next = it.next().toString();
 				cDB.addCurrency(next, rates.getDouble(next));
 			}
+			cDB.close();
 		}
 	}
 
@@ -162,14 +144,6 @@ public class CurrencyConverter {
 			return true;
 		}
 		return false;
-	}
-
-	/*
-	 * Creates a Google HttpPost Query
-	 */
-	private HttpPost makeQuery() {
-		String query = GOOGLEHOST + "hl=en&q=" + amount + fromC + "%3D%3F" + toC;
-		return new HttpPost(query);
 	}
 
 	public void setAmount(double amount) {

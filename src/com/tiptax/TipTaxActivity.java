@@ -251,8 +251,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 	}
 
-	private void updateCurrency(){
-
+	private void updateCurrency() {
 
 		ListIterator<Person> pi = personList.listIterator();
 
@@ -262,6 +261,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 		personAdapter.notifyDataSetChanged();
 
+		taxDue.setText(numberFormat.format(tax));
 		tipDue.setText(numberFormat.format(tip));
 		totalDue.setText(numberFormat.format(total));
 

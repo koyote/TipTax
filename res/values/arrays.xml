@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="defaultUpdateNames">
+        <item>Once a Month</item>
+        <item>Once a Week</item>
+        <item>Once a Day</item>
+        <item>Once an hour</item>
+    </string-array>
+    <string-array name="defaultUpdateValues">
+        <item>2629743</item>
+        <item>604800</item>
+        <item>86400</item>
+        <item>3600</item>
+    </string-array>
     <string-array name="defaultTipValues">
         <item>5</item>
         <item>10</item>
