@@ -189,6 +189,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		updateDefaultValues();
 		updateCurrency();
+		updateTotalAndTipValues();
 	}
 
 	/*
