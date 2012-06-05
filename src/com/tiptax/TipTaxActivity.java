@@ -219,7 +219,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 				EditText taxTotal = (EditText) taxInputDialog.findViewById(R.id.taxValueEditText);
 				if (!taxTotal.getText().toString().equals("")) {
 					try {
-						tax = Float.parseFloat(taxTotal.getText().toString());
+						tax = Double.parseDouble(taxTotal.getText().toString());
 					} catch (NumberFormatException nfe) {
 						Toast toast = Toast.makeText(getApplicationContext(), "Please enter a number!", Toast.LENGTH_LONG);
 						toast.show();
@@ -253,7 +253,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		numberFormat.setMaximumFractionDigits(c.getDefaultFractionDigits());
 		numberFormat.setCurrency(c);
 
-		tipPercentage = Float.valueOf(prefs.getString("default_tip", "15"));
+		tipPercentage = Double.parseDouble(prefs.getString("default_tip", "15"));
 		if (tipLabel != null) {
 			tipLabel.setText(formattedTipPctLabel());
 		}
