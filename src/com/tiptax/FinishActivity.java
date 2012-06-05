@@ -16,9 +16,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -118,13 +115,6 @@ public class FinishActivity extends ListActivity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.finishmenu, menu);
-		return true;
-	}
-
 	public void convertCurrencyClick(View V) {
 
 		final String[] currencyArrayNames = getResources().getStringArray(R.array.defaultCurrenciesNames);
@@ -148,15 +138,4 @@ public class FinishActivity extends ListActivity {
 		alert.show();
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-		case R.id.currconvert_menu_btn:
-			new CurrencyConvertTask().execute();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 }
