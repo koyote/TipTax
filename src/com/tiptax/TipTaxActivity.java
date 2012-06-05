@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TipTaxActivity extends ListActivity implements OnSharedPreferenceChangeListener {
 
@@ -217,7 +218,13 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 			public void onClick(View v) {
 				EditText taxTotal = (EditText) taxInputDialog.findViewById(R.id.taxValueEditText);
 				if (!taxTotal.getText().toString().equals("")) {
-					tax = Float.parseFloat(taxTotal.getText().toString());
+					try {
+						tax = Float.parseFloat(taxTotal.getText().toString());
+					} catch (NumberFormatException nfe) {
+						Toast toast = Toast.makeText(getApplicationContext(), "Please enter a number!", Toast.LENGTH_LONG);
+						toast.show();
+						return;
+					}
 					taxDue.setText(numberFormat.format(tax));
 					updateTotalAndTipValues();
 				}
