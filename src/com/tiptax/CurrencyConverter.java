@@ -55,7 +55,6 @@ public class CurrencyConverter {
 	 * Uses google to convert currencies immediately
 	 */
 	public double convert() throws IllegalStateException, IOException, JSONException {
-		cDB.open();
 
 		if (isOnline()) {
 			// Checking if we have a copy of the exchange rates yet, or if they
@@ -66,6 +65,7 @@ public class CurrencyConverter {
 			}
 		}
 
+		cDB.open();
 		// Lets convert that stuff!
 		if ((exRatesMap = cDB.getAllCurrencies()) != null && !exRatesMap.isEmpty()) {
 			cDB.close();
