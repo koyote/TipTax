@@ -260,6 +260,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 		}
 	}
 
+	/*
+	 * Updates the number formatting to the new currency
+	 */
 	private void updateCurrency() {
 
 		ListIterator<Person> pi = personList.listIterator();

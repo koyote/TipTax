@@ -12,10 +12,14 @@ public class AddPersonActivity extends Activity {
 	private String personName, personValue;
 	private int origPos;
 
+	/*
+	 * Called when the Ok button is clicked
+	 */
 	public void addPersonOKClick(View v) {
 		personName = ((EditText) findViewById(R.id.namePersonET)).getText().toString();
 		personValue = ((EditText) findViewById(R.id.valuePersonET)).getText().toString();
 
+		// Check input
 		if (personName.equals("")) {
 			Toast toast = Toast.makeText(getApplicationContext(), "Please enter a name!", Toast.LENGTH_LONG);
 			toast.show();
@@ -25,6 +29,7 @@ public class AddPersonActivity extends Activity {
 			toast.show();
 			return;
 		}
+		
 		try {
 			Double.parseDouble(personValue);
 		} catch (NumberFormatException nfe) {
@@ -33,6 +38,7 @@ public class AddPersonActivity extends Activity {
 			return;
 		}
 
+		// Send info back to main Activity
 		Intent in = new Intent();
 		in.putExtra("name", personName);
 		in.putExtra("value", personValue);

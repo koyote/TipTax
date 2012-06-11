@@ -115,11 +115,15 @@ public class FinishActivity extends ListActivity {
 
 	}
 
+	/*
+	 * Called when pressing the "convert to" button
+	 */
 	public void convertCurrencyClick(View V) {
 
 		final String[] currencyArrayNames = getResources().getStringArray(R.array.defaultCurrenciesNames);
 		final String[] currencyArrayValues = getResources().getStringArray(R.array.defaultCurrenciesValues);
 
+		// Lets make a dialog box
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("Pick a currency to convert to");
 		builder.setItems(currencyArrayNames, new DialogInterface.OnClickListener() {
@@ -127,6 +131,8 @@ public class FinishActivity extends ListActivity {
 				currencyTo = currencyArrayValues[item];
 				converter.setFrom(currencyFrom);
 				converter.setTo(currencyTo);
+				
+				// Run the thread only if we're actually converting to a new currency
 				if (!currencyFrom.equals(currencyTo)) {
 					new CurrencyConvertTask().execute();
 				}
