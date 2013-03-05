@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TipTax</string>
+    <string name="app_name">TipTax</string>
     <string name="add_p">Add Person</string>
     <string name="zero">0</string>
     <string name="total">TOTAL</string>
@@ -18,5 +18,4 @@
     <string name="finish">Finish</string>
     <string name="delete">Delete</string>
     <string name="convert_currency">Convert Currency To...</string>
-
 </resources>

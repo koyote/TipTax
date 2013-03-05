@@ -9,60 +9,60 @@ import android.widget.Toast;
 
 public class AddPersonActivity extends Activity {
 
-	private String personName, personValue;
-	private int origPos;
+    private String personName, personValue;
+    private int origPos;
 
-	/*
-	 * Called when the Ok button is clicked
-	 */
-	public void addPersonOKClick(View v) {
-		personName = ((EditText) findViewById(R.id.namePersonET)).getText().toString();
-		personValue = ((EditText) findViewById(R.id.valuePersonET)).getText().toString();
+    /*
+     * Called when the Ok button is clicked
+     */
+    public void addPersonOKClick(View v) {
+        personName = ((EditText) findViewById(R.id.namePersonET)).getText().toString();
+        personValue = ((EditText) findViewById(R.id.valuePersonET)).getText().toString();
 
-		// Check input
-		if (personName.equals("")) {
-			Toast toast = Toast.makeText(getApplicationContext(), "Please enter a name!", Toast.LENGTH_LONG);
-			toast.show();
-			return;
-		} else if (personValue.equals("")) {
-			Toast toast = Toast.makeText(getApplicationContext(), "Please enter a value!", Toast.LENGTH_LONG);
-			toast.show();
-			return;
-		}
-		
-		try {
-			Double.parseDouble(personValue);
-		} catch (NumberFormatException nfe) {
-			Toast toast = Toast.makeText(getApplicationContext(), "Please enter a number!", Toast.LENGTH_LONG);
-			toast.show();
-			return;
-		}
+        // Check input
+        if (personName.equals("")) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Please enter a name!", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        } else if (personValue.equals("")) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Please enter a value!", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
 
-		// Send info back to main Activity
-		Intent in = new Intent();
-		in.putExtra("name", personName);
-		in.putExtra("value", personValue);
-		in.putExtra("origPos", origPos);
-		setResult(Activity.RESULT_OK, in);
-		finish();
-	}
+        try {
+            Double.parseDouble(personValue);
+        } catch (NumberFormatException nfe) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Please enter a number!", Toast.LENGTH_LONG);
+            toast.show();
+            return;
+        }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_person);
-	}
+        // Send info back to main Activity
+        Intent in = new Intent();
+        in.putExtra("name", personName);
+        in.putExtra("value", personValue);
+        in.putExtra("origPos", origPos);
+        setResult(Activity.RESULT_OK, in);
+        finish();
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		Intent i = getIntent();
-		personName = i.getStringExtra("name");
-		personValue = i.getStringExtra("value");
-		origPos = i.getIntExtra("origPos", -1);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.add_person);
+    }
 
-		((EditText) findViewById(R.id.namePersonET)).setText(personName);
-		((EditText) findViewById(R.id.valuePersonET)).setText(personValue);
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent i = getIntent();
+        personName = i.getStringExtra("name");
+        personValue = i.getStringExtra("value");
+        origPos = i.getIntExtra("origPos", -1);
+
+        ((EditText) findViewById(R.id.namePersonET)).setText(personName);
+        ((EditText) findViewById(R.id.valuePersonET)).setText(personValue);
+    }
 
 }

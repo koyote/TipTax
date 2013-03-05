@@ -5,13 +5,11 @@
         <item>Once a Month</item>
         <item>Once a Week</item>
         <item>Once a Day</item>
-        <item>Once an hour</item>
     </string-array>
     <string-array name="defaultUpdateValues">
         <item>2629743</item>
         <item>604800</item>
         <item>86400</item>
-        <item>3600</item>
     </string-array>
     <string-array name="defaultTipValues">
         <item>5</item>
@@ -59,7 +57,7 @@
         <item>HKD</item>
         <item>HUF</item>
         <item>ILS</item>
-        <item>JPY	</item>
+        <item>JPY</item>
         <item>MYR</item>
         <item>MXN</item>
         <item>NOK</item>
