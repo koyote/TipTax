@@ -24,7 +24,7 @@ import android.preference.PreferenceManager;
 
 public class CurrencyConverter {
 
-	private static final String OEHOST = "http://openexchangerates.org/latest.json";
+	private static final String OEHOST = "http://openexchangerates.org/api/latest.json?app_id=99b615f1128142f7ae1a351a0b1e627a";
 	private static final HttpClient httpClient = new DefaultHttpClient();
 
 	private String fromC;
@@ -82,7 +82,7 @@ public class CurrencyConverter {
 	 * Converts an inputStream into a String.
 	 */
 	private String isToString(InputStream is) throws IOException {
-		String line = "";
+		String line;
 		StringBuilder total = new StringBuilder();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 
@@ -97,7 +97,7 @@ public class CurrencyConverter {
 	 * Uses a free API to get pretty up-to-date exchange rates and puts them
 	 * into our database
 	 */
-	private void getExchangeRates() throws ClientProtocolException, IOException, JSONException {
+	private void getExchangeRates() throws IOException, JSONException {
 
 		HttpResponse response = httpClient.execute(new HttpPost(OEHOST));
 		HttpEntity entity = response.getEntity();
@@ -140,11 +140,8 @@ public class CurrencyConverter {
 	private boolean isOnline() {
 		ConnectivityManager cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
-		if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-			return true;
-		}
-		return false;
-	}
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
 
 	public void setAmount(double amount) {
 		this.amount = amount;

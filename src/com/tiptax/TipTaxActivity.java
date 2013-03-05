@@ -65,7 +65,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 	 * Formats a the TIP string.
 	 */
 	private String formattedTipPctLabel() {
-		return new String("TIP (" + tipPercentage + "%)");
+		return "TIP (" + tipPercentage + "%)";
 	}
 
 	@Override
