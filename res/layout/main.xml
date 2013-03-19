@@ -1,120 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:paddingTop="8dp" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingTop="8dp">
 
     <ListView
-        android:id="@+id/android:list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#808080"
-        android:maxLines="100"
-        android:scrollbars="vertical" />
+            android:id="@+id/android:list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="100"
+            android:scrollbars="vertical"
+            android:layout_above="@+id/rest"/>
 
     <TextView
-        android:id="@+id/android:empty"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_items" />
+            android:id="@+id/android:empty"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_items"
+            android:layout_above="@+id/rest"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom|right"
-        android:orientation="vertical" >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom|right"
+            android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left"
-                android:text="@string/tax"
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/taxInput"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:gravity="right"
-                android:onClick="taxInputClick"
-                android:text="@string/zero"
-                android:textSize="25sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tipText"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left"
-                android:text="@string/tip"
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/tipInput"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:gravity="right"
-                android:text="@string/zero"
-                android:textSize="25sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="left"
-                android:text="@string/total"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/TotalDueText"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:gravity="right"
-                android:text="@string/zero"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/addPerson"
-                android:layout_width="wrap_content"
-                android:layout_height="52dp"
-                android:drawableLeft="@android:drawable/ic_input_add"
-                android:onClick="addPersonClick"
-                android:text="@string/add_p" />
-
-            <Button
-                android:id="@+id/finishToTable"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:drawableLeft="@android:drawable/ic_input_get"
-                android:onClick="finishClick"
-                android:text="@string/finish" />
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:text="@string/tax"
+                    android:textSize="25sp"/>
+
+            <TextView
+                    android:id="@+id/taxInput"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:gravity="right"
+                    android:onClick="taxInputClick"
+                    android:text="@string/zero"
+                    android:textSize="25sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:id="@+id/tipText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:text="@string/tip"
+                    android:textSize="25sp"/>
+
+            <TextView
+                    android:id="@+id/tipInput"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:text="@string/zero"
+                    android:textSize="25sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="left"
+                    android:text="@string/total"
+                    android:textSize="30sp"/>
+
+            <TextView
+                    android:id="@+id/TotalDueText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:text="@string/zero"
+                    android:textSize="30sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/addPerson"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableLeft="@android:drawable/ic_menu_add"
+                    android:onClick="addPersonClick"
+                    android:text="@string/add_p"/>
+
+            <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:id="@+id/finishToTable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:drawableLeft="@android:drawable/ic_input_get"
+                    android:onClick="finishClick"
+                    android:text="@string/finish"/>
         </LinearLayout>
     </LinearLayout>
 

@@ -3,11 +3,11 @@
     <item
         android:id="@+id/pref_menu_btn"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:title="Preferences"/>
+        android:title="@string/preferences"/>
     
     <item
         android:id="@+id/reset_menu_btn"
         android:icon="@android:drawable/ic_delete"
-        android:title="Reset"/>
+        android:title="@string/reset"/>
 
 </menu>
