@@ -3,12 +3,13 @@
     <string name="app_name">TipTax</string>
     <string name="add_p">Add Person</string>
     <string name="zero">0</string>
-    <string name="total">TOTAL</string>
-    <string name="tip">TIP</string>
-    <string name="tax">TAX</string>
+    <string name="total">Total</string>
+    <string name="tip">Tip</string>
+    <string name="tax">Tax</string>
     <string name="name">Name</string>
     <string name="t_spent">Total Spent</string>
-    <string name="ok">OK</string>
+    <string name="tt_spent">Total Tax Spent</string>
+    <string name="ok">Ok</string>
     <string name="no_items">Please add a Person!</string>
     <string name="finish">Finish</string>
     <string name="delete">Delete</string>
@@ -16,5 +17,5 @@
     <string name="preferences">Preferences</string>
     <string name="reset">Reset</string>
     <string name="cancel">Cancel</string>
-    <string name="t_toast">Please enter a number!</string>
+    <string name="no_number">Please enter a number!</string>
 </resources>

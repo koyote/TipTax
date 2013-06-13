@@ -2,7 +2,6 @@ package com.tiptax;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,11 +9,18 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.preference.PreferenceScreen;
 import android.text.InputType;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -25,11 +31,9 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
 
     private static final int EDITREQ = 1;
     private static final int NEWREQ = 0;
-
     private PersonAdapter personAdapter;
     private ArrayList<Person> personList;
     private SharedPreferences prefs;
-
     private double tipPercentage, tax, tip, total;
     private TextView totalDue, tipDue, taxDue, tipLabel;
     private NumberFormat numberFormat;
@@ -60,7 +64,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
      * Formats a the TIP string.
      */
     private String formattedTipPctLabel() {
-        return "TIP (" + tipPercentage + "%)";
+        return getResources().getString(R.string.tip) + " (" + tipPercentage + "%)";
     }
 
     @Override
@@ -206,7 +210,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
     public void taxInputClick(View v) {
         final EditText taxTotal = new EditText(this);
         taxTotal.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        taxTotal.setHint(R.string.t_spent);
+        taxTotal.setHint(R.string.tt_spent);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(TipTaxActivity.this);
         builder.setTitle("Change tax");
@@ -218,7 +222,7 @@ public class TipTaxActivity extends ListActivity implements OnSharedPreferenceCh
                     try {
                         tax = Double.parseDouble(taxTotal.getText().toString());
                     } catch (NumberFormatException nfe) {
-                        Toast toast = Toast.makeText(getApplicationContext(), R.string.t_toast, Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.no_number, Toast.LENGTH_LONG);
                         toast.show();
                         return;
                     }
