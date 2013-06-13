@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public class CurrencyDBWrapper {
     private SQLiteDatabase db;
-    private CurrencyDB dbHelper;
-    private String[] columns = {CurrencyDB.COLUMN_ID, CurrencyDB.CURRENCIES_COLUMN_CURRENCY, // 1
+    private final CurrencyDB dbHelper;
+    private final String[] columns = {CurrencyDB.COLUMN_ID, CurrencyDB.CURRENCIES_COLUMN_CURRENCY, // 1
             CurrencyDB.CURRENCIES_COLUMN_RATE}; // 2
 
     private static final int CURRENCY_IDX = 1;

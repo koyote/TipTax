@@ -30,9 +30,9 @@ public class CurrencyConverter {
     private double amount;
     private final Context ctx;
     private HashMap<String, Double> exRatesMap;
-    private SharedPreferences prefs;
-    private CurrencyDBWrapper cDB;
-    private long updateFreq;
+    private final SharedPreferences prefs;
+    private final CurrencyDBWrapper cDB;
+    private final long updateFreq;
 
     public CurrencyConverter(Context ctx, String from, String to, double amount) {
         this.ctx = ctx;

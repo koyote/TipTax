@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Currency;
 
 public class PersonAdapter extends ArrayAdapter<Person> {
-    private ArrayList<Person> personList;
+    private final ArrayList<Person> personList;
 
     public PersonAdapter(Context context, int resourceID, ArrayList<Person> personList) {
         super(context, resourceID, personList);

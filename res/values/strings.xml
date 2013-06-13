@@ -12,7 +12,7 @@
     <string name="no_items">Please add a Person!</string>
     <string name="finish">Finish</string>
     <string name="delete">Delete</string>
-    <string name="convert_currency">Convert Currency To…</string>
+    <string name="convert_currency">Convert Currency</string>
     <string name="preferences">Preferences</string>
     <string name="reset">Reset</string>
     <string name="cancel">Cancel</string>

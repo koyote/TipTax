@@ -65,9 +65,7 @@ public class FinishActivity extends ListActivity {
 
     private PersonAdapter personAdapter;
     private ArrayList<Person> personList;
-    private double totalPersonDue, totalTipAndTaxDue;
     private CurrencyConverter converter;
-    private SharedPreferences prefs;
     private String currencyTo, currencyFrom;
 
     private ProgressDialog pdg;
@@ -89,11 +87,11 @@ public class FinishActivity extends ListActivity {
         // Handling intent
         Intent i = getIntent();
         personList = i.getParcelableArrayListExtra("persons");
-        totalTipAndTaxDue = i.getDoubleExtra("totalTipAndTaxDue", 0);
-        totalPersonDue = i.getDoubleExtra("totalPersonDue", 0);
+        double totalTipAndTaxDue = i.getDoubleExtra("totalTipAndTaxDue", 0);
+        double totalPersonDue = i.getDoubleExtra("totalPersonDue", 0);
 
         // Getting the currencies and converter
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Getting the default currency
         currencyFrom = prefs.getString("default_currency", "USD");
