@@ -15,4 +15,6 @@
     <string name="convert_currency">Convert Currency To…</string>
     <string name="preferences">Preferences</string>
     <string name="reset">Reset</string>
+    <string name="cancel">Cancel</string>
+    <string name="t_toast">Please enter a number!</string>
 </resources>

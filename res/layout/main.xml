@@ -6,19 +6,19 @@
               android:paddingTop="8dp">
 
     <ListView
-            android:id="@+id/android:list"
+            android:id="@android:id/list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:maxLines="100"
             android:scrollbars="vertical"
-            android:layout_above="@+id/rest"/>
+            />
 
     <TextView
-            android:id="@+id/android:empty"
+            android:id="@android:id/empty"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/no_items"
-            android:layout_above="@+id/rest"/>
+            />
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -36,6 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="left"
+                    android:onClick="taxInputClick"
                     android:text="@string/tax"
                     android:textSize="25sp"/>
 
@@ -43,9 +44,9 @@
                     android:id="@+id/taxInput"
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
+                    android:onClick="taxInputClick"
                     android:clickable="true"
                     android:gravity="right"
-                    android:onClick="taxInputClick"
                     android:text="@string/zero"
                     android:textSize="25sp"/>
         </LinearLayout>
