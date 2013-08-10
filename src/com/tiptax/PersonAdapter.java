@@ -8,13 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 
 public class PersonAdapter extends ArrayAdapter<Person> {
-    private final ArrayList<Person> personList;
+    private final List<Person> personList;
 
-    public PersonAdapter(Context context, int resourceID, ArrayList<Person> personList) {
+    public PersonAdapter(Context context, int resourceID, List<Person> personList) {
         super(context, resourceID, personList);
         this.personList = personList;
     }
