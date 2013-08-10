@@ -1,6 +1,5 @@
 package com.tiptax;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -8,7 +7,6 @@ import android.preference.PreferenceFragment;
 public class TipTaxPreferences extends PreferenceActivity {
 
     @Override
-    @SuppressLint("NewApi")
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();

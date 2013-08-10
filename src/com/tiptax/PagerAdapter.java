@@ -20,20 +20,14 @@ public class PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.d("TipTax", "Hello");
-
         switch (position) {
             case 0:
-                Log.d("TipTax", "1");
-
                 return Fragment.instantiate(context, MainFragment.class.getName());
             case 1:
-                Log.d("TipTax", "2");
-
                 return Fragment.instantiate(context, FinishFragment.class.getName());
+            default:
+                return Fragment.instantiate(context, MainFragment.class.getName());
         }
-        System.out.println("NOT SUPPOSED TO BE HERE");
-        return Fragment.instantiate(context, "MainFragment");
     }
 
     @Override
